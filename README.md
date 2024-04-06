@@ -21,8 +21,8 @@ Once your machine has finished rebooting, installation will continue and you wil
 
 Start Ubuntu from the start menu, or from the terminal by typing `ubuntu`
 
-Then run the following script
+Then run the following script (Delphi 12.1)
 
-```curl -L https://embt.co/SetupUbuntu4Delphi22 | bash```
+```curl -L curl -L https://tinyurl.com/SetupUbuntu4Delphi23 | bash | bash```
 
 If you don't have curl installed then run `sudo apt install curl -y` first

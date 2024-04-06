@@ -1,7 +1,7 @@
 #!/bin/bash
 # 
 # Download and execute with the following:
-# curl -L http://tinyurl.com/SetupLinuxRS12 | bash
+# curl -L https://tinyurl.com/SetupUbuntu4Delphi23 | bash
 #
 echo "Updating the local package directory"
 sudo apt update 
