@@ -1,7 +1,7 @@
 #!/bin/bash
 # 
 # Download and execute with the following:
-# curl -L https://embt.co/SetupRedHat4Delphi22sh | bash
+# curl -L https://tinyurl.com/SetupRedHat4Delphi23 | bash
 #
 echo "updating installed package"
 sudo yum upgrade -y
