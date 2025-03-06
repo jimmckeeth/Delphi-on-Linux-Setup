@@ -12,8 +12,13 @@ sudo apt install joe python3 libpython3-dev wget p7zip-full curl libgtk-3-dev op
 echo "Clean-up unused packages"
 sudo apt autoremove -y
 cd ~
-echo "Downloading Linux PAServer for Alexandria 11.3 (22.0)"
-wget https://altd.embarcadero.com/releases/studio/22.0/113/LinuxPAServer22.0.tar.gz 
+echo "Downloading Linux PAServer for Alexandria 12.3 (23.0)"
+# wget https://altd.embarcadero.com/releases/studio/22.0/113/LinuxPAServer22.0.tar.gz # 11.3
+# wget https://altd.embarcadero.com/releases/studio/23.0/120/LinuxPAServer23.0.tar.gz # 12.0
+# wget https://altd.embarcadero.com/releases/studio/23.0/121/LinuxPAServer23.0.tar.gz # 12.1
+# wget https://altd.embarcadero.com/releases/studio/23.0/122/LinuxPAServer23.0.tar.gz # 12.2
+wget https://altd.embarcadero.com/releases/studio/23.0/123/LinuxPAServer23.0.tar.gz # 12.3
+
 echo "Setting up directories to extract PA Server into"
 mkdir PAServer
 mkdir PAServer/22.0
