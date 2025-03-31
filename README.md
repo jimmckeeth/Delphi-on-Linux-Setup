@@ -65,6 +65,8 @@ wsl --terminate CentOS9-Stream
 
 ### Then run the following script (Delphi 12.3)
 
-```curl -L curl -L https://tinyurl.com/SetupRedHat4Delphi23 | bash```
+```
+curl -L curl -L https://tinyurl.com/SetupRedHat4Delphi23 | bash
+```
 
 If you don't have curl installed then run `sudo apt install curl -y` first
