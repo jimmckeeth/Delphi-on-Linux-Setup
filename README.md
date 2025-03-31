@@ -22,7 +22,7 @@ Once your machine has finished rebooting, installation will continue and you wil
 
 Start Ubuntu from the start menu, or from the terminal by typing `ubuntu`
 
-### Then run the following script (Delphi 12.1)
+### Then run the following script (Delphi 12.3)
 
 ```curl -L https://tinyurl.com/SetupUbuntu4Delphi23 | bash```
 
