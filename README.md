@@ -63,7 +63,7 @@ wsl --terminate CentOS9-Stream
 ```
 * You can now launch CentOS
 
-### Then run the following script (Delphi 12.1)
+### Then run the following script (Delphi 12.3)
 
 ```curl -L curl -L https://tinyurl.com/SetupRedHat4Delphi23 | bash```
 
