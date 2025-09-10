@@ -2,7 +2,7 @@
 set -e
 # 
 # Download and execute with the following:
-# curl -L https://tinyurl.com/SetupUbuntu4Delphi | sudo bash
+# curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
 #
 echo "Setup Linux for Delphi development version 2024-06-10"
 echo "_____________________________________________________________"
