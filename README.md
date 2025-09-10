@@ -9,7 +9,7 @@ curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
 ```
 The installation location changed now, so it isn't user specific. Also, the same script supports earlier versions of Delphi. It defaults to the latest, but you can specify any different version:
 
-Usage: `sudo SetupUbuntu4Delphi.sh [version]`
+Usage: `sudo SetupLinux4Delphi.sh [version]`
 
 Where [version] is one of the following:
 
