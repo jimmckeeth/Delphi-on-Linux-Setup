@@ -304,7 +304,9 @@ fi
 # fi
 # Ensure ownership by the invoking user
 mkdir -p "$SCRATCH_DIR"
+# Give all users write access to the scratch directory
 chown "$SUDO_USER":"$SUDO_USER" "$SCRATCH_DIR"
+chmod a+rw "$SCRATCH_DIR"
 # Remove archive file
 rm "$INSTALL_DIR/$ARCHIVE"
 
