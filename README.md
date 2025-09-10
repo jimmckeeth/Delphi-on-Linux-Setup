@@ -83,7 +83,7 @@ Once your machine has finished rebooting, installation will continue and you wil
 
 Start Ubuntu from the start menu, or from the terminal by typing `ubuntu`
 
-### Then run the following script (Delphi 12.3)
+### Then run the following script
 
 ```
 curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
