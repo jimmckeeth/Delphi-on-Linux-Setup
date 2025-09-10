@@ -1,13 +1,74 @@
 # Delphi-on-Linux-Setup
- Scripts and resources to simplify the setup and development with Delphi on Linux
+Scripts and resources to simplify the setup and development with Delphi on Linux
 
- This was originally a series of [GISTs](https://gist.github.com/jimmckeeth/1cb657694d1ea18335782213097c8a33) that myself and [Ian Barker](https://gist.github.com/checkdigits/f910e3c4b308a25b31b9a5c1f23c5461) were updating. Figured it was time to turn it into a full GitHub project where we can collect all the scripts and add additional resources.
+## Updated to support Delphi 13 *Florence* (37.0)
 
-The Bash scripts works with CentOS (Redhat, Fedora) or Ubuntu and related Linux distros. I've used them both under WSL2, VM, and hardware installs.
+The same script works for both RedHat/Fedora and Ubuntu/Debian. There are a number of other quality of life improvements too. To run it from the web:
+```
+curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
+```
+The installation location changed now, so it isn't user specific. Also, the same script supports earlier versions of Delphi. It defaults to the latest, but you can specify any different version:
 
-* Ubuntu support: 20.04 LTS and 22.04 LTS - `curl -L curl -L https://tinyurl.com/SetupUbuntu4Delphi23 | bash`
-* Redhat support: CentOS 9, FedoraRemix (WSL), RHEL8 -  `curl -L curl -L https://tinyurl.com/SetupRedHat4Delphi23 | bash`
-* [Official Platform Support list](https://docwiki.embarcadero.com/PlatformStatus/en/Main_Page)
+Usage: `sudo SetupUbuntu4Delphi.sh [version]`
+
+Where [version] is one of the following:
+
+* Florence 13.0    = `Florence`, `37.0`, `13.0` or *blank*
+* Athens 12.3      = `Athens`, `23.0`, `12.3`, or `12`
+* Athens 12.2      = `12.2`
+* Athens 12.1      = `12.1`
+* Athens 12.0      = `12.0`
+* Alexandria 11.3  = `Alexandria`, `22.0`, `11.3`, or `11`
+* Alexandria 11.2  = `11.2`
+* Alexandria 11.1  = `11.1`
+* Alexandria 11.0  = `11.0`
+* Sydney 10.4.1    = `Sydney`, `21.0`, or `10.4.1`
+* Sydney 10.4.0    = `10.4.0`
+* Rio 10.3.3       = `Rio`, `20.0`, `10.3`, or `10.3.3`
+* Rio 10.3.2       = `10.3.2`
+* Rio 10.3.1       = `10.3.1`
+* Rio 10.3.0       = `10.3.0`
+* Tokyo 10.2.3     = `Tokyo`, `19.0`, `10.2`, or `10.2.3`
+* Tokyo 10.2.0     = `10.2`
+
+The less specific labels are the latest versions, while the more specific labels refer to the exact version.
+
+I tested Delphi 13 Florence against the following distros with this script:
+
+* Debian based
+  * Ubuntu 18.04
+  * Ubuntu 20.04
+  * Ubuntu 22.04
+  * Ubuntu 24.04
+  * Kali Linux (rolling)
+  * Debian 13 (trixie)
+  * Pengwin (WSL)
+* Fedora bassed
+  * Fedora Linux 42
+  * Fedora Remix for WSL
+  * Rocky Linux 9.6 (Blue Onyx)
+  * Alma Linux 9.6 (Safe Margay)
+  * Oracle Linux Server 9.5
+
+I wasn't able to log into my Red Hat account to get the latest RHEL, but it is also Fedora based so it should be fine. 
+
+See the [Official Platform Support list](https://docwiki.embarcadero.com/PlatformStatus/en/Main_Page).
+
+It detects the distro and version and works with `apt`, `yum`, and `dnf` package managers as necessary. You can [view the full source](https://github.com/jimmckeeth/Delphi-on-Linux-Setup/blob/main/scripts/SetupLinux4Delphi.sh), which is recommended before running it on your hardware.
+
+Installation changes:
+
+It defaults to a **blank password**. You should _probably_ change that.
+
+The instalation locations are as follows:
+
+* INSTALL_DIR="/opt/PAServer/$FRIENDLY"
+* SCRIPT_PATH="/usr/local/bin/pa$FRIENDLY.sh"
+* SCRATCH_DIR="/var/tmp/paserver-$FRIENDLY"
+
+Where friendly is 13.0, 12.2, etc. So you launch the Florence PAServer with `pa13.0.sh`
+
+This was originally a series of [GISTs](https://gist.github.com/jimmckeeth/1cb657694d1ea18335782213097c8a33) that myself and [Ian Barker](https://gist.github.com/checkdigits/f910e3c4b308a25b31b9a5c1f23c5461) were updating. Figured it was time to turn it into a full GitHub project where we can collect all the scripts and add additional resources.
 
 ## Installing Ubuntu with WSL2 on Windows 11
 
@@ -25,48 +86,8 @@ Start Ubuntu from the start menu, or from the terminal by typing `ubuntu`
 ### Then run the following script (Delphi 12.3)
 
 ```
-curl -L https://tinyurl.com/SetupUbuntu4Delphi23 | bash
+curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
 ```
 
 If you don't have curl installed then run `sudo apt install curl -y` first
 
-***************
-
-## Installing CentOS 9 Stream in WSL2 on Windows 11
-
-Microsoft has a [full article](https://docs.microsoft.com/en-us/windows/wsl/install) with all the details.
-
-`wsl --install`
-
-**Note:** *There isn't a Red Hat as part of the default WSL distributions*. This script should work with any RPM based distribution using the YUM package manager.
-
-To manually install CentOS Stream 9 follow these steps:
-
-1. Download the latest [CentOS Stream 9 release](https://github.com/mishamosher/CentOS-WSL) (this is not an official CentOS or WSL source)
-2. Extract the content into a folder it can live on your system. I picked `C:\WSL\CentOS9`
-3. Run `CentOS9-stream.exe` as Administrator to install CentOS 9
-4. Start CentOS 9
-
-CentOS is installed, but it doesn't have a user yet. The following will create a user for you. Then you need to restart the CentOS instance.
-
-* From CentOS
-```
-yum update -y && yum install passwd sudo -y
-myUsername=delphi
-adduser -G wheel $myUsername
-echo -e "[user]\ndefault=$myUsername" >> /etc/wsl.conf
-passwd $myUsername
-```
-* From PowerShell
-```
-wsl --terminate CentOS9-Stream
-```
-* You can now launch CentOS
-
-### Then run the following script (Delphi 12.3)
-
-```
-curl -L curl -L https://tinyurl.com/SetupRedHat4Delphi23 | bash
-```
-
-If you don't have curl installed then run `sudo apt install curl -y` first
