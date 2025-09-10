@@ -1,5 +1,5 @@
 # Delphi-on-Linux-Setup
-Scripts and resources to simplify the setup and development with Delphi on Linux
+Scripts and resources to simplify the setup and development with Delphi on Linux. It should work with all x86 64-bit Linux distros that Delphi suports in WSL, Virtual Machines, or running on hardware natively. 
 
 ## Updated to support Delphi 13 *Florence* (37.0)
 
