@@ -1,8 +1,7 @@
 #!/bin/bash
-set -e
 # 
 # Download and execute with the following:
-# curl -L https://tinyurl.com/SetupUbuntu4Delphi | sudo bash
+# curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
 #
 echo "Setup Linux for Delphi development version 2024-06-10"
 echo "_____________________________________________________________"
@@ -10,6 +9,9 @@ echo ""
 echo "This script requires sudo, su, or root privileges."
 echo "More info: https://github.com/jimmckeeth/Delphi-on-Linux-Setup"
 echo ""
+# Stop on all errors
+set -e
+
 if [[ $EUID -ne 0 ]]; then
   echo "Please run this script with sudo or as root."
   exit 1
