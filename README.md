@@ -4,7 +4,7 @@ Scripts and resources to simplify the setup and development with Delphi on Linux
 ## Updated to support Delphi 13 *Florence* (37.0)
 
 The same script works for both RedHat/Fedora and Ubuntu/Debian. There are a number of other quality of life improvements too. To run it from the web:
-```
+```bash
 curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
 ```
 The installation location changed now, so it isn't user specific. Also, the same script supports earlier versions of Delphi. It defaults to the latest, but you can specify any different version:
