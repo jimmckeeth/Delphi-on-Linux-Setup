@@ -46,107 +46,107 @@ case "$PARAM" in
     "37.0"|"13.0"|"florence")
         VERSION="37.0"
         RELEASE="Florence"
-        FRIENDLY="13.0"
+        PRODUCT="13.0"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/37.0/130/LinuxPAServer37.0.tar.gz"
         ;;
     # Athens
     "23.0"|"12.3"|"12"|"athens")
         VERSION="23.0"
         RELEASE="Athens"
-        FRIENDLY="12.3"
+        PRODUCT="12.3"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/23.0/123/LinuxPAServer23.0.tar.gz"
         ;;
     "12.2")
         VERSION="23.0"
-        FRIENDLY="12.2"
+        PRODUCT="12.2"
         RELEASE="Athens"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/23.0/122/1221/LinuxPAServer23.0.tar.gz"
         ;;
     "12.1")
         VERSION="23.0"
-        FRIENDLY="12.1"
+        PRODUCT="12.1"
         RELEASE="Athens"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/23.0/121/1211/LinuxPAServer23.0.tar.gz"
         ;;
     "12.0")
         VERSION="23.0"
-        FRIENDLY="12.0"
+        PRODUCT="12.0"
         RELEASE="Athens"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/23.0/120/LinuxPAServer23.0.tar.gz"
         ;;
     # Alexandria
     "22.0"|"11"|"11.3"|"alexandria")
         VERSION="22.0"
-        FRIENDLY="11.3"
+        PRODUCT="11.3"
         RELEASE="Alexandria"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/22.0/113/LinuxPAServer22.0.tar.gz"
     ;;
     "11.0")
         VERSION="22.0"
-        FRIENDLY="11.0"
+        PRODUCT="11.0"
         RELEASE="Alexandria"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/22.0/LinuxPAServer22.0.tar.gz"
     ;;
     "11.1")
         VERSION="22.0"
-        FRIENDLY="11.1"
+        PRODUCT="11.1"
         RELEASE="Alexandria"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/22.0/111/LinuxPAServer22.0.tar.gz"
     ;;
     "11.2")
         VERSION="22.0"
-        FRIENDLY="11.2"
+        PRODUCT="11.2"
         RELEASE="Alexandria"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/22.0/112/LinuxPAServer22.0.tar.gz"
     ;;  
     # Sydney
     "10.4"|"10.4.1"|"sydney"|"21.0")
         VERSION="21.0"
-        FRIENDLY="10.4.1"
+        PRODUCT="10.4.1"
         RELEASE="Sydney"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/21.0/1/PAServer/LinuxPAServer21.0.tar.gz"
     ;;
     "10.4.0")
         VERSION="21.0"
-        FRIENDLY="10.4.0"
+        PRODUCT="10.4.0"
         RELEASE="Sydney"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/21.0/PAServer/LinuxPAServer21.0.tar.gz"
     ;;
     # Rio
     "10.3"|"rio"|"10.3.3")
         VERSION="20.0"
-        FRIENDLY="10.3.3"
+        PRODUCT="10.3.3"
         RELEASE="Rio"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/20.0/PAServer/Release3/LinuxPAServer20.0.tar.gz"
     ;;
     "10.3.2")
         VERSION="20.0"
-        FRIENDLY="10.3.2"
+        PRODUCT="10.3.2"
         RELEASE="Rio"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/20.0/PAServer/Release2/LinuxPAServer20.0.tar.gz"
     ;;
     "10.3.1")
         VERSION="20.0"
-        FRIENDLY="10.3.1"
+        PRODUCT="10.3.1"
         RELEASE="Rio"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/20.0/PAServer/Release1/LinuxPAServer20.0.tar.gz"
     ;;
     "10.3.0")
         VERSION="20.0"
-        FRIENDLY="10.3.0"
+        PRODUCT="10.3.0"
         RELEASE="Rio"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/20.0/PAServer/LinuxPAServer20.0.tar.gz"
     ;;
     # Tokyo
     "10.2"|"tokyo"|"10.2.3")
         VERSION="19.0"
-        FRIENDLY="10.2.3"
+        PRODUCT="10.2.3"
         RELEASE="Tokyo"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/19.0/PAServer/Release3/LinuxPAServer19.0.tar.gz"
     ;;
     "10.2")
         VERSION="19.0"
-        FRIENDLY="10.2.0"
+        PRODUCT="10.2.0"
         RELEASE="Tokyo"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/19.0/PAServer/LinuxPAServer19.0.tar.gz"
     ;;
@@ -159,13 +159,13 @@ fi
 
 ARCHIVE="${PASERVER_URL##*/}"
 
-echo "Setting up for Delphi $FRIENDLY $RELEASE ($VERSION)"
+echo "Setting up for Delphi $PRODUCT $RELEASE ($VERSION)"
 echo "Using PAServer URL: $PASERVER_URL"
 echo ""
 # Set defaults
-INSTALL_DIR="/opt/PAServer/$FRIENDLY"
-SCRIPT_PATH="/usr/local/bin/pa$FRIENDLY.sh"
-SCRATCH_DIR="/var/tmp/paserver-$FRIENDLY"
+INSTALL_DIR="/opt/PAServer/$PRODUCT"
+SCRIPT_PATH="/usr/local/bin/pa$PRODUCT.sh"
+SCRATCH_DIR="/var/tmp/paserver-$PRODUCT"
 echo "Installation directory: $INSTALL_DIR"
 echo "Launch script path: $SCRIPT_PATH"
 echo "" 
@@ -234,7 +234,8 @@ fi
 
 echo "__________________________________________________________________"
 echo ""
-echo "Install new packages necessary for Delphi & FMXLinux"
+echo "Install new packages required for Delphi & FMXLinux"
+echo "https://docwiki.embarcadero.com/RADStudio/en/Linux_Application_Development"
 if [[ "$PKG" == "apt" ]]; then
     # Determine the correct ncurses package
     if apt-cache show libncurses6 2>/dev/null | grep -q 'Package:'; then
@@ -299,11 +300,12 @@ if [ $? -ne 0 ]; then
 fi
 
 # Fix the Python 3.6 dependency
-if [[ "$PKG" == "apt" ]]; then
-    ln -sf $(ls -1 /usr/lib/x86_64-linux-gnu/libpython3.*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
-else
-    ln -sf $(ls -1 /usr/lib64/libpython3*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
-fi
+# https://blogs.embarcadero.com/setting-up-ubuntu-22-04-for-delphi-11-2-debugging/
+# if [[ "$PKG" == "apt" ]]; then
+#     ln -sf $(ls -1 /usr/lib/x86_64-linux-gnu/libpython3.*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
+# else
+#     ln -sf $(ls -1 /usr/lib64/libpython3*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
+# fi
 # Ensure ownership by the invoking user
 mkdir -p "$SCRATCH_DIR"
 # Give all users write access to the scratch directory
@@ -351,5 +353,5 @@ echo "Password is BLANK (none)"
 echo "Edit the script to change settings."
 echo "____________________________________________"
 echo ""
-echo " To launch PAServer type: pa$FRIENDLY.sh"
+echo " To launch PAServer type: pa$PRODUCT.sh"
 echo "____________________________________________"
