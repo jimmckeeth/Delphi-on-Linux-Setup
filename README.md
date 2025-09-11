@@ -1,7 +1,9 @@
 # Delphi-on-Linux-Setup
 Scripts and resources to simplify the setup and development with Delphi on Linux. It should work with all x86 64-bit Linux distros that Delphi suports in WSL, Virtual Machines, or running on hardware natively. 
 
-## Updated to support Delphi 13 *Florence* (37.0)
+**Updated** to support Delphi 13 *Florence* (37.0)
+
+## Usage
 
 The same script works for both RedHat/Fedora and Ubuntu/Debian. There are a number of other quality of life improvements too. To run it from the web:
 ```bash
@@ -56,17 +58,36 @@ See the [Official Platform Support list](https://docwiki.embarcadero.com/Platfor
 
 It detects the distro and version and works with `apt`, `yum`, and `dnf` package managers as necessary. You can [view the full source](https://github.com/jimmckeeth/Delphi-on-Linux-Setup/blob/main/scripts/SetupLinux4Delphi.sh), which is recommended before running it on your hardware.
 
-Installation changes:
+## Installation changes:
 
-It defaults to a **blank password**. You should _probably_ change that.
+The old version of the script installed it based on the compiler version number, now it is based on the product version number. The reason for the name change is to support installation of multiple versions of PAServer. Technically both _12.0_ and _12.3_ are still **23.0**, so to allow installing both versions they need a unique name. I thought that was easier than using the _build number_.
+
+It defaults to a **blank password**. You should _probably_ change that.q
 
 The instalation locations are as follows:
 
-* INSTALL_DIR="/opt/PAServer/$FRIENDLY"
-* SCRIPT_PATH="/usr/local/bin/pa$FRIENDLY.sh"
-* SCRATCH_DIR="/var/tmp/paserver-$FRIENDLY"
+* INSTALL_DIR="/opt/PAServer/$PRODUCT"
+* SCRIPT_PATH="/usr/local/bin/pa$PRODUCT.sh"
+* SCRATCH_DIR="/var/tmp/paserver-$PRODUCT"
 
-Where friendly is 13.0, 12.2, etc. So you launch the Florence PAServer with `pa13.0.sh`
+Where _$PRODUCT_ is 13.0, 12.2, etc. So you launch the Florence PAServer with `pa13.0.sh`
+
+## More information
+
+The installation of packages is based on the [DocWiki](https://docwiki.embarcadero.com/RADStudio/en/Linux_Application_Development), but with a few changes to address neuances of different distros & install. If the script doesn't work on your distro of choice then see if the original DocWiki instructions do, and if that still doesn't work, then you distro or installation might not be supported. 
+
+DocWiki Links:
+
+* [Linux Application Development](https://docwiki.embarcadero.com/RADStudio/en/Linux_Application_Development)
+* [Installing the Platform Assistant on Linux](https://docwiki.embarcadero.com/RADStudio/en/Installing_the_Platform_Assistant_on_Linux)
+* [PAServer Overview](https://docwiki.embarcadero.com/RADStudio/en/PAServer,_the_Platform_Assistant_Server_Application)
+* [Platform Assistant Server Errors Index](https://docwiki.embarcadero.com/RADStudio/en/Platform_Assistant_Server_Errors_Index)
+* [Setting Options for the Platform Assistant](https://docwiki.embarcadero.com/RADStudio/en/Setting_Options_for_the_Platform_Assistant)
+* [FmxLinux/FireMonkey for Linux](https://docwiki.embarcadero.com/RADStudio/en/FireMonkey_for_Linux)
+* [Delphi Compiler Versions](https://docwiki.embarcadero.com/RADStudio/en/Compiler_Versions)
+* [Python 3.6 issue](https://blogs.embarcadero.com/setting-up-ubuntu-22-04-for-delphi-11-2-debugging/)
+
+## History
 
 This was originally a series of [GISTs](https://gist.github.com/jimmckeeth/1cb657694d1ea18335782213097c8a33) that myself and [Ian Barker](https://gist.github.com/checkdigits/f910e3c4b308a25b31b9a5c1f23c5461) were updating. Figured it was time to turn it into a full GitHub project where we can collect all the scripts and add additional resources.
 
