@@ -298,12 +298,12 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# # Fix the Python 3.6 dependency
-# if [[ "$PKG" == "apt" ]]; then
-#     ln -sf $(ls -1 /usr/lib/x86_64-linux-gnu/libpython3.*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
-# else
-#     ln -sf $(ls -1 /usr/lib64/libpython3*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
-# fi
+# Fix the Python 3.6 dependency
+if [[ "$PKG" == "apt" ]]; then
+    ln -sf $(ls -1 /usr/lib/x86_64-linux-gnu/libpython3.*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
+else
+    ln -sf $(ls -1 /usr/lib64/libpython3*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
+fi
 # Ensure ownership by the invoking user
 mkdir -p "$SCRATCH_DIR"
 # Give all users write access to the scratch directory
