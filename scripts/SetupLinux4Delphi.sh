@@ -44,108 +44,108 @@ case "$PARAM" in
         ;;
     # Florence
     "37.0"|"13.0"|"florence")
-        VERSION="37.0"
+        COMPILER="37.0"
         RELEASE="Florence"
         PRODUCT="13.0"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/37.0/130/LinuxPAServer37.0.tar.gz"
         ;;
     # Athens
     "23.0"|"12.3"|"12"|"athens")
-        VERSION="23.0"
+        COMPILER="23.0"
         RELEASE="Athens"
         PRODUCT="12.3"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/23.0/123/LinuxPAServer23.0.tar.gz"
         ;;
     "12.2")
-        VERSION="23.0"
+        COMPILER="23.0"
         PRODUCT="12.2"
         RELEASE="Athens"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/23.0/122/1221/LinuxPAServer23.0.tar.gz"
         ;;
     "12.1")
-        VERSION="23.0"
+        COMPILER="23.0"
         PRODUCT="12.1"
         RELEASE="Athens"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/23.0/121/1211/LinuxPAServer23.0.tar.gz"
         ;;
     "12.0")
-        VERSION="23.0"
+        COMPILER="23.0"
         PRODUCT="12.0"
         RELEASE="Athens"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/23.0/120/LinuxPAServer23.0.tar.gz"
         ;;
     # Alexandria
     "22.0"|"11"|"11.3"|"alexandria")
-        VERSION="22.0"
+        COMPILER="22.0"
         PRODUCT="11.3"
         RELEASE="Alexandria"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/22.0/113/LinuxPAServer22.0.tar.gz"
     ;;
     "11.0")
-        VERSION="22.0"
+        COMPILER="22.0"
         PRODUCT="11.0"
         RELEASE="Alexandria"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/22.0/LinuxPAServer22.0.tar.gz"
     ;;
     "11.1")
-        VERSION="22.0"
+        COMPILER="22.0"
         PRODUCT="11.1"
         RELEASE="Alexandria"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/22.0/111/LinuxPAServer22.0.tar.gz"
     ;;
     "11.2")
-        VERSION="22.0"
+        COMPILER="22.0"
         PRODUCT="11.2"
         RELEASE="Alexandria"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/22.0/112/LinuxPAServer22.0.tar.gz"
     ;;  
     # Sydney
     "10.4"|"10.4.1"|"sydney"|"21.0")
-        VERSION="21.0"
+        COMPILER="21.0"
         PRODUCT="10.4.1"
         RELEASE="Sydney"
         PASERVER_URL="https://altd.embarcadero.com/releases/studio/21.0/1/PAServer/LinuxPAServer21.0.tar.gz"
     ;;
     "10.4.0")
-        VERSION="21.0"
+        COMPILER="21.0"
         PRODUCT="10.4.0"
         RELEASE="Sydney"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/21.0/PAServer/LinuxPAServer21.0.tar.gz"
     ;;
     # Rio
     "10.3"|"rio"|"10.3.3")
-        VERSION="20.0"
+        COMPILER="20.0"
         PRODUCT="10.3.3"
         RELEASE="Rio"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/20.0/PAServer/Release3/LinuxPAServer20.0.tar.gz"
     ;;
     "10.3.2")
-        VERSION="20.0"
+        COMPILER="20.0"
         PRODUCT="10.3.2"
         RELEASE="Rio"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/20.0/PAServer/Release2/LinuxPAServer20.0.tar.gz"
     ;;
     "10.3.1")
-        VERSION="20.0"
+        COMPILER="20.0"
         PRODUCT="10.3.1"
         RELEASE="Rio"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/20.0/PAServer/Release1/LinuxPAServer20.0.tar.gz"
     ;;
     "10.3.0")
-        VERSION="20.0"
+        COMPILER="20.0"
         PRODUCT="10.3.0"
         RELEASE="Rio"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/20.0/PAServer/LinuxPAServer20.0.tar.gz"
     ;;
     # Tokyo
     "10.2"|"tokyo"|"10.2.3")
-        VERSION="19.0"
+        COMPILER="19.0"
         PRODUCT="10.2.3"
         RELEASE="Tokyo"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/19.0/PAServer/Release3/LinuxPAServer19.0.tar.gz"
     ;;
     "10.2")
-        VERSION="19.0"
+        COMPILER="19.0"
         PRODUCT="10.2.0"
         RELEASE="Tokyo"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/19.0/PAServer/LinuxPAServer19.0.tar.gz"
@@ -153,13 +153,13 @@ case "$PARAM" in
 esac
 
 if [ -z "$PASERVER_URL" ]; then
-    echo "Unknown version: $VERSION"
+    echo "Unknown version: $PARAM"
     exit 1
 fi
 
 ARCHIVE="${PASERVER_URL##*/}"
 
-echo "Setting up for Delphi $PRODUCT $RELEASE ($VERSION)"
+echo "Setting up for Delphi $PRODUCT $RELEASE ($COMPILER)"
 echo "Using PAServer URL: $PASERVER_URL"
 echo ""
 # Set defaults
@@ -299,13 +299,16 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Fix the Python 3.6 dependency
+# Fix the Python 3.6 dependency in lldb for Delphi 11.0
 # https://blogs.embarcadero.com/setting-up-ubuntu-22-04-for-delphi-11-2-debugging/
-# if [[ "$PKG" == "apt" ]]; then
-#     ln -sf $(ls -1 /usr/lib/x86_64-linux-gnu/libpython3.*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
-# else
-#     ln -sf $(ls -1 /usr/lib64/libpython3*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
-# fi
+if [[ "$COMPILER" == "22.0" ]]; then
+    echo "Fixing lldb Python dependency"
+    if [[ "$PKG" == "apt" ]]; then
+        ln -sf $(ls -1 /usr/lib/x86_64-linux-gnu/libpython3.*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
+    else
+        ln -sf $(ls -1 /usr/lib64/libpython3*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
+    fi
+fi
 # Ensure ownership by the invoking user
 mkdir -p "$SCRATCH_DIR"
 # Give all users write access to the scratch directory
