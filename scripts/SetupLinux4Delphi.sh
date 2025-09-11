@@ -252,7 +252,7 @@ if [[ "$PKG" == "apt" ]]; then
       apt purge openssh-server -y
     fi
     set -e
-    apt install joe python3 libpython3-dev wget p7zip-full curl libgtk-3-dev build-essential zlib1g-dev libcurl4-gnutls-dev $NCURSES_PKG xorg libgl1-mesa-dev libosmesa-dev libgtk-3-bin libc6-dev -y
+    apt install joe wget p7zip-full curl build-essential zlib1g-dev libcurl4-gnutls-dev python3 libpython3-dev libgtk-3-dev $NCURSES_PKG xorg libgl1-mesa-dev libosmesa-dev libgtk-3-bin libc6-dev -y
 else
     if [[ "$PKG" == "dnf" ]]; then
       if [[ ("$ID_LIKE" == *"fedora"* || "$ID" == "fedora") && "${VERSION_ID}" -ge 40 ]]; then
@@ -263,7 +263,7 @@ else
     else
       yum groupinstall 'Development Tools' -y
     fi
-    $PKG install wget gtk3 mesa-libGL gtk3-devel python3 python3-devel -y
+    $PKG install wget gtk3 mesa-libGL gtk3-devel python3 zlib-devel python3-devel -y
 fi
 if [ $? -ne 0 ]; then
     echo "Package installation failed. Aborting."
