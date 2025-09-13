@@ -299,9 +299,9 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Fix the Python 3.6 dependency in lldb for Delphi 11.0
+# Fix the Python 3.6 dependency in lldb for Delphi 11.2
 # https://blogs.embarcadero.com/setting-up-ubuntu-22-04-for-delphi-11-2-debugging/
-if [[ "$COMPILER" == "22.0" ]]; then
+if [[ "$PRODUCT" == "11.2" ]]; then
     echo "Fixing lldb Python dependency"
     if [[ "$PKG" == "apt" ]]; then
         ln -sf $(ls -1 /usr/lib/x86_64-linux-gnu/libpython3.*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
