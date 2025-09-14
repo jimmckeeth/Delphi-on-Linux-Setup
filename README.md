@@ -52,7 +52,7 @@ I tested Delphi 13 Florence against the following distros with this script:
   * Alma Linux 9.6 (Safe Margay)
   * Oracle Linux Server 9.5
 
-I wasn't able to log into my Red Hat account to get the latest RHEL, but it is also Fedora based so it should be fine. 
+I wasn't able to log into my Red Hat account to get the latest RHEL, but it is also Fedora based so it _should be fine_. 
 
 See the [Official Platform Support list](https://docwiki.embarcadero.com/PlatformStatus/en/Main_Page).
 
@@ -66,15 +66,15 @@ It defaults to a **blank password**. You should _probably_ change that.q
 
 The instalation locations are as follows:
 
-* INSTALL_DIR="/opt/PAServer/$PRODUCT"
-* SCRIPT_PATH="/usr/local/bin/pa$PRODUCT.sh"
-* SCRATCH_DIR="/var/tmp/paserver-$PRODUCT"
+* `INSTALL_DIR="/opt/PAServer/$PRODUCT"`
+* `SCRIPT_PATH="/usr/local/bin/pa$PRODUCT.sh"`
+* `SCRATCH_DIR="/var/tmp/paserver-$PRODUCT"`
 
-Where _$PRODUCT_ is 13.0, 12.2, etc. So you launch the Florence PAServer with `pa13.0.sh`
+Where `$PRODUCT` is 13.0, 12.2, etc. So you launch the *Florence* PAServer with `pa13.0.sh`.
 
 ## More information
 
-The installation of packages is based on the [DocWiki](https://docwiki.embarcadero.com/RADStudio/en/Linux_Application_Development), but with a few changes to address neuances of different distros & install. If the script doesn't work on your distro of choice then see if the original DocWiki instructions do, and if that still doesn't work, then you distro or installation might not be supported. 
+The installation of packages is based on the [DocWiki](https://docwiki.embarcadero.com/RADStudio/en/Linux_Application_Development), but with a few changes to address neuances of different distros & installs. If the script doesn't work on your distro of choice then see if the original DocWiki instructions do, and if that still doesn't work, then you distro or installation might not be supported. 
 
 DocWiki Links:
 
