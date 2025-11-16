@@ -3,7 +3,7 @@
 # Download and execute with the following:
 # curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
 #
-echo "Setup Linux for Delphi development version 2024-11-16"
+echo "Setup Linux for Delphi development version 2024-11-16 rev2"
 echo "_____________________________________________________________"
 echo ""
 echo "This script requires sudo, su, or root privileges."
