@@ -278,7 +278,7 @@ elif [[ "$PKG" == "pacman" ]]; then
     pacman-key --populate archlinux
     
     # Upgrade and install packages
-    pacman -Syu --needed --noconfirm openssh joe wget p7zip curl base-devel zlib python gtk3 ncurses xorg-server mesa
+    pacman -Syu --needed --noconfirm openssh wget p7zip curl base-devel zlib python gtk3 ncurses xorg-server mesa
     
     # Re-enable SteamOS read-only filesystem
     if command -v steamos-readonly &> /dev/null; then
