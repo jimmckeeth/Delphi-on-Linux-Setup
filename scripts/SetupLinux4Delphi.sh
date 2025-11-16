@@ -199,6 +199,13 @@ elif [[ "$ID" == "rhel" || "$ID" == "centos" || "$ID" == "fedora" || "$ID_LIKE" 
     else
       PKG="yum"
     fi
+elif [[ "$ID" == "steamos" || "$ID_LIKE" == *"arch"* ]]; then
+    # SteamOS/Arch Linux logic
+    if [ "$(uname -m)" != "x86_64" ]; then
+        echo "This script requires a x86_64-bit operating system."
+        exit 1
+    fi
+    PKG="pacman"
 else
     echo "Unsupported Linux distribution. Aborting."
     exit 1
@@ -224,6 +231,8 @@ echo ""
 echo "Upgrading any outdated packages"
 if [[ "$PKG" == "apt" ]]; then
     apt dist-upgrade -y
+elif [[ "$PKG" == "pacman" ]]; then
+    pacman -Syu --noconfirm
 else
     $PKG upgrade -y
 fi
@@ -254,6 +263,20 @@ if [[ "$PKG" == "apt" ]]; then
     fi
     set -e
     apt install joe wget p7zip-full curl build-essential zlib1g-dev libcurl4-gnutls-dev python3 libpython3-dev libgtk-3-dev $NCURSES_PKG xorg libgl1-mesa-dev libosmesa-dev libgtk-3-bin libc6-dev -y
+elif [[ "$PKG" == "pacman" ]]; then
+    # SteamOS has a read-only filesystem, this command disables that.
+    if command -v steamos-readonly &> /dev/null; then
+        echo "Temporarily disabling SteamOS read-only filesystem..."
+        steamos-readonly disable
+    fi
+    
+    pacman -Syu --needed --noconfirm openssh joe wget p7zip curl base-devel zlib python gtk3 ncurses xorg-server mesa
+    
+    # Re-enable SteamOS read-only filesystem
+    if command -v steamos-readonly &> /dev/null; then
+        echo "Re-enabling SteamOS read-only filesystem..."
+        steamos-readonly enable
+    fi
 else
     if [[ "$PKG" == "dnf" ]]; then
       if [[ ("$ID_LIKE" == *"fedora"* || "$ID" == "fedora") && "${VERSION_ID}" -ge 40 ]]; then
@@ -276,6 +299,10 @@ echo ""
 echo "Clean-up unused packages"
 if [[ "$PKG" == "apt" ]]; then
     apt autoremove -y
+elif [[ "$PKG" == "pacman" ]]; then
+    if pacman -Qtdq > /dev/null; then
+        pacman -Rns --noconfirm $(pacman -Qtdq)
+    fi
 else
     $PKG autoremove -y
 fi
@@ -305,6 +332,8 @@ if [[ "$PRODUCT" == "11.2" ]]; then
     echo "Fixing lldb Python dependency"
     if [[ "$PKG" == "apt" ]]; then
         ln -sf $(ls -1 /usr/lib/x86_64-linux-gnu/libpython3.*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
+    elif [[ "$PKG" == "pacman" ]]; then
+        ln -sf $(ls -1 /usr/lib/libpython3.*.so | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
     else
         ln -sf $(ls -1 /usr/lib64/libpython3*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
     fi
