@@ -6,7 +6,7 @@
 echo ""
 echo "_____________________________________________________________"
 echo ""
-echo "Setup Linux for Delphi development version 2024-11-16 rev 3"
+echo "Setup Linux for Delphi development version 2024-11-16.5"
 echo "_____________________________________________________________"
 echo ""
 echo "This script requires sudo, su, or root privileges."
@@ -290,12 +290,6 @@ elif [[ "$PKG" == "pacman" ]]; then
     
     echo "Restoring original pacman configuration..."
     mv /etc/pacman.conf.bak /etc/pacman.conf
-    
-    # Re-enable SteamOS read-only filesystem
-    if command -v steamos-readonly &> /dev/null; then
-        echo "Re-enabling SteamOS read-only filesystem..."
-        steamos-readonly enable
-    fi
 else
     if [[ "$PKG" == "dnf" ]]; then
       if [[ ("$ID_LIKE" == *"fedora"* || "$ID" == "fedora") && "${VERSION_ID}" -ge 40 ]]; then
@@ -392,6 +386,14 @@ if [ ! -f "$SCRIPT_PATH" ]; then
     echo "Launch script creation failed. Aborting."
     exit 1
 fi 
+
+if [[ "$PKG" == "pacman" ]]; then
+    # Re-enable SteamOS read-only filesystem
+    if command -v steamos-readonly &> /dev/null; then
+        echo "Re-enabling SteamOS read-only filesystem..."
+        steamos-readonly enable
+    fi
+fi
 
 echo "____________________________________________"
 echo ""
