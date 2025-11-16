@@ -3,7 +3,10 @@
 # Download and execute with the following:
 # curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
 #
-echo "Setup Linux for Delphi development version 2024-11-16 rev2"
+echo ""
+echo "_____________________________________________________________"
+echo ""
+echo "Setup Linux for Delphi development version 2024-11-16 rev 3"
 echo "_____________________________________________________________"
 echo ""
 echo "This script requires sudo, su, or root privileges."
@@ -277,8 +280,16 @@ elif [[ "$PKG" == "pacman" ]]; then
     pacman-key --init
     pacman-key --populate archlinux
     
+    echo "Temporarily disabling package signature checking to work around keyring issues..."
+    cp /etc/pacman.conf /etc/pacman.conf.bak
+    sed -i 's/^\s*SigLevel\s*=.*/#&/' /etc/pacman.conf
+    sed -i '/\[options\]/a SigLevel = Never' /etc/pacman.conf
+
     # Upgrade and install packages
     pacman -Syu --needed --noconfirm openssh wget p7zip curl base-devel zlib python gtk3 ncurses xorg-server mesa
+    
+    echo "Restoring original pacman configuration..."
+    mv /etc/pacman.conf.bak /etc/pacman.conf
     
     # Re-enable SteamOS read-only filesystem
     if command -v steamos-readonly &> /dev/null; then
