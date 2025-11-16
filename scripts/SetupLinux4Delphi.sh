@@ -3,7 +3,7 @@
 # Download and execute with the following:
 # curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
 #
-echo "Setup Linux for Delphi development version 2024-06-10"
+echo "Setup Linux for Delphi development version 2024-11-16"
 echo "_____________________________________________________________"
 echo ""
 echo "This script requires sudo, su, or root privileges."
@@ -231,15 +231,18 @@ echo ""
 echo "Upgrading any outdated packages"
 if [[ "$PKG" == "apt" ]]; then
     apt dist-upgrade -y
-elif [[ "$PKG" == "pacman" ]]; then
-    pacman -Syu --noconfirm
-else
+    if [ $? -ne 0 ]; then
+        echo "Upgrade failed. Aborting."
+        exit 1
+    fi
+elif [[ "$PKG" != "pacman" ]]; then
     $PKG upgrade -y
+    if [ $? -ne 0 ]; then
+        echo "Upgrade failed. Aborting."
+        exit 1
+    fi
 fi
-if [ $? -ne 0 ]; then
-    echo "Upgrade failed. Aborting."
-    exit 1
-fi
+# For pacman, upgrade and install are done in one step below
 
 echo "__________________________________________________________________"
 echo ""
@@ -269,7 +272,12 @@ elif [[ "$PKG" == "pacman" ]]; then
         echo "Temporarily disabling SteamOS read-only filesystem..."
         steamos-readonly disable
     fi
+
+    echo "Initializing pacman keyring and updating packages..."
+    pacman-key --init
+    pacman-key --populate archlinux
     
+    # Upgrade and install packages
     pacman -Syu --needed --noconfirm openssh joe wget p7zip curl base-devel zlib python gtk3 ncurses xorg-server mesa
     
     # Re-enable SteamOS read-only filesystem
