@@ -1,8 +1,10 @@
 #!/bin/bash
 # 
-# Download and execute with the following:
+# Single step download and execute with the following:
 # curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
 #
+echo "_____________________________________________________________"
+echo ""
 echo "Setup Linux for Delphi development version 2024-06-10"
 echo "_____________________________________________________________"
 echo ""
@@ -177,8 +179,8 @@ else
     echo "Cannot determine Linux distribution. Aborting."
     exit 1
 fi
-if [[ "$ID" == "ubuntu" || "$ID" == "debian" || "$ID_LIKE" == *"debian"* || "$ID_LIKE" == *"ubuntu"* ]]; then
-    # Ubuntu/Debian logic
+if [[ "$ID" == "ubuntu" || "$ID" == "debian" || "$ID_LIKE" == *"debian"* || "$ID_LIKE" == *"ubuntu"* || "$ID" == "kali" ]]; then
+    # Ubuntu/Debian/Kali logic
     PKG="apt"
     if [[ ("$ID" == "ubuntu" && "$(echo "$VERSION_ID < 16.04" | bc)" -eq 1) || ("$ID" == "debian" && "$(echo "$VERSION_ID < 10" | bc)" -eq 1) ]]; then
         echo "This script requires at least Ubuntu 16.04 or Debian 10."
@@ -253,7 +255,26 @@ if [[ "$PKG" == "apt" ]]; then
       apt purge openssh-server -y
     fi
     set -e
-    apt install joe wget p7zip-full curl build-essential zlib1g-dev libcurl4-gnutls-dev python3 libpython3-dev libgtk-3-dev $NCURSES_PKG xorg libgl1-mesa-dev libosmesa-dev libgtk-3-bin libc6-dev -y
+    # Removed libosmesa-dev from strict requirements
+    apt install joe wget p7zip-full curl build-essential zlib1g-dev libcurl4-gnutls-dev python3 libpython3-dev libgtk-3-dev $NCURSES_PKG xorg libgl1-mesa-dev libgtk-3-bin libc6-dev -y
+    omesa=
+    # Optional installation of OSMesa (handles missing package errors gracefully)
+    echo "Attempting to install optional libosmesa-dev..."
+    set +e
+    apt install libosmesa-dev -y 2>/dev/null
+    if [ $? -ne 0 ]; then
+        echo "libosmesa-dev not found, checking for libosmesa6-dev..."
+        apt install libosmesa6-dev -y 2>/dev/null
+        if [ $? -ne 0 ]; then
+             omesa = "Warning: Optional package libosmesa-dev (or libosmesa6-dev) was not found. Continuing installation without it."
+        else
+             omesa = "Installed optional libosmesa6-dev successfully."
+        fi
+    else
+        omesa = "Installed optional libosmesa-dev successfully."
+    fi
+    echo $omesa
+    set -e
 else
     if [[ "$PKG" == "dnf" ]]; then
       if [[ ("$ID_LIKE" == *"fedora"* || "$ID" == "fedora") && "${VERSION_ID}" -ge 40 ]]; then
@@ -344,6 +365,8 @@ if [ ! -f "$SCRIPT_PATH" ]; then
     echo "Launch script creation failed. Aborting."
     exit 1
 fi 
+
+echo $omesa
 
 echo "____________________________________________"
 echo ""
