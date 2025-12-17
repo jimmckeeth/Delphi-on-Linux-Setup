@@ -16,7 +16,7 @@ curl -fsSL https://tinyurl.com/SetupLinux4Delphi | sudo bash
 
 The installation location changed now, so it isn't user specific. Also, the same script supports earlier versions of Delphi. It defaults to the latest, but you can specify any different version:
 
-Usage: `sudo SetupLinux4Delphi.sh [version]`
+Usage: `sudo SetupLinux4Delphi.sh [version] [pkgmgr]`
 
 Where [version] is one of the following:
 
@@ -40,6 +40,17 @@ Where [version] is one of the following:
 
 The less specific labels are the latest versions, while the more specific labels refer to the exact version.
 
+Experimental: [pkgmgr] parameter allows you to optionally override the os and package manager detection. Valid values are:
+
+* `apt`  - for Ubuntu/Debian based distros
+* `yum`  - for RedHat based distros
+* `dnf`  - for Fedora based distros
+* `pacman` - for Arch based distros (experimental, not fully tested)
+
+**Note**: Just because you can install it on a distro doesn't mean it is supported by Delphi. See the [Official Platform Support list](https://docwiki.embarcadero.com/PlatformStatus/en/Main_Page).
+
+## Tested Distros
+
 I tested Delphi 13 Florence against the following distros with this script:
 
 * Debian based
@@ -48,7 +59,7 @@ I tested Delphi 13 Florence against the following distros with this script:
   * Ubuntu 22.04
   * Ubuntu 24.04
   * Kali Linux Rolling 2.6.3.0
-  * Debian 13 (trixie)
+  * Debian 13 (trixie) - Requires a manual curl install first: `sudo apt install curl -y`
   * Pengwin (WSL)
 * Fedora bassed
   * Fedora Linux 42
@@ -56,18 +67,20 @@ I tested Delphi 13 Florence against the following distros with this script:
   * Rocky Linux 9.6 (Blue Onyx)
   * Alma Linux 9.6 (Safe Margay)
   * Oracle Linux Server 9.5
+* Other
+  * Steam OS 3.7.17 (Arch based) - *experimental* with partial support. The SDK import misses some libraries, so if build against a different SDK then I was able to run it on Steam OS. If you can track down the issues then please file an issue or PR.
 
 I wasn't able to log into my Red Hat account to get the latest RHEL, but it is also Fedora based so it *should be fine*.
 
 See the [Official Platform Support list](https://docwiki.embarcadero.com/PlatformStatus/en/Main_Page).
 
-It detects the distro and version and works with `apt`, `yum`, and `dnf` package managers as necessary. You can [view the full source](https://github.com/jimmckeeth/Delphi-on-Linux-Setup/blob/main/scripts/SetupLinux4Delphi.sh), which is recommended before running it on your hardware.
+It detects the distro and version and works with `apt`, `yum`, `dnf`, and `pacman` (experimental) package managers as necessary. You can [view the full source](https://github.com/jimmckeeth/Delphi-on-Linux-Setup/blob/main/scripts/SetupLinux4Delphi.sh), which is recommended before running it on your hardware.
 
 ## Installation changes
 
 The old version of the script installed it based on the compiler version number, now it is based on the product version number. The reason for the name change is to support installation of multiple versions of PAServer. Technically both *12.0* and *12.3* are still **23.0**, so to allow installing both versions they need a unique name. I thought that was easier than using the *build number*.
 
-It defaults to a **blank password**. You should *probably* change that.q
+It defaults to a **blank password**. You should *probably* change that.
 
 The instalation locations are as follows:
 
@@ -98,7 +111,9 @@ This was originally a series of [GISTs](https://gist.github.com/jimmckeeth/1cb65
 
 ## Installing Ubuntu with WSL2 on Windows 11
 
-Microsoft has a [full article](https://docs.microsoft.com/en-us/windows/wsl/install) with all the details. This is a summary for quick reference.
+Windows Subsystem for Linux 2 (WSL2) is a quick and lightweight way to get started with Linux from within Windows 11. It provides a lightweight virtualized Linux environment that integrates well with Windows.
+
+Microsoft has a [full article](https://docs.microsoft.com/en-us/windows/wsl/install) with all the details. This is a summary for quick reference. There are BIOS configuration steps that may be required depending on your hardware.
 
 On Windows you need to do this from an elevated (administrator) command prompt or PowerShell window. Easiest way is **Win+X,A**.
 
@@ -106,12 +121,11 @@ On Windows you need to do this from an elevated (administrator) command prompt o
 wsl --install -d Ubuntu
 ```
 
-Once your machine has finished rebooting, installation will continue and you will be asked to enter a username and password. This will be your Linux credential for the Ubuntu distribution.
+Your machine may reboot before installation asks you to enter a username and password. This will be your Linux credential for the Ubuntu distribution, and are separate from your Windows credentials.
 
 Start Ubuntu from the start menu, or from the terminal by typing `ubuntu`
 
 ### Then run the following script
 
 ```bash
-curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
-```
+curl -fsSL https://tinyurl.com/SetupLinux4Delphi | sudo bash```

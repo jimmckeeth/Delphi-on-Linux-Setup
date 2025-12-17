@@ -15,11 +15,53 @@ echo ""
 set -e
 
 if [[ $EUID -ne 0 ]]; then
-  echo "Please run this script with sudo or as root."
+  echo "Please run this script with sudo."
   exit 1
 fi
 
-PARAM="$(echo "${1:-37.0}" | tr '[:upper:]' '[:lower:]')"
+# Parse arguments
+PARAM="37.0" # Default version
+PKG_OVERRIDE=""
+
+while [[ $# -gt 0 ]]; do
+  key="$(echo "$1" | tr '[:upper:]' '[:lower:]')"
+  case $key in
+    apt|dnf|yum|pacman)
+      PKG_OVERRIDE="$key"
+      shift
+      ;;
+    help|--help|h|--h|-h)
+      echo "Usage: sudo SetupLinux4Delphi.sh [version] [manager]"
+      echo ""
+      echo "  manager            = apt, pacman, dnf, or yum (force specific package manager)"
+      echo ""
+      echo "Where [version] is one of the following:"
+      echo "  37.0, 13.0         = Florence 13.0 [DEFAULT]"
+      echo "  23.0, 12.3, 12     = Athens 12.3"
+      echo "  12.2               = Athens 12.2"
+      echo "  12.1               = Athens 12.1"
+      echo "  12.0               = Athens 12.0"
+      echo "  22.0, 11.3, 11     = Alexandria 11.3"
+      echo "  11.2               = Alexandria 11.2"
+      echo "  11.1               = Alexandria 11.1"
+      echo "  11.0               = Alexandria 11.0"
+      echo "  21.0, 10.4.1       = Sydney 10.4.1"
+      echo "  10.4.0             = Sydney 10.4.0"
+      echo "  20.0, 10.3, 10.3.3 = Rio 10.3.3"
+      echo "  10.3.2             = Rio 10.3.2"
+      echo "  10.3.1             = Rio 10.3.1"
+      echo "  10.3.0             = Rio 10.3.0"
+      echo "  19.0, 10.2, 10.2.3 = Tokyo 10.2.3"
+      echo "  10.2               = Tokyo 10.2.0"
+      exit 0
+      ;;
+    *)
+      PARAM="$key"
+      shift
+      ;;
+  esac
+done
+
 case "$PARAM" in
     "help"|"--help"|"h"|"--h"|"-h")
         echo "Usage: sudo SetupUbuntu4Delphi.sh [version]"
@@ -202,15 +244,11 @@ elif [[ "$ID" == "rhel" || "$ID" == "centos" || "$ID" == "fedora" || "$ID_LIKE" 
     else
       PKG="yum"
     fi
-elif [[ "$ID" == "steamos" || "$ID_LIKE" == *"arch"* ]]; then
-    # SteamOS/Arch Linux logic
-    if [ "$(uname -m)" != "x86_64" ]; then
-        echo "This script requires a x86_64-bit operating system."
-        exit 1
-    fi
+elif [[ "$ID" == "steamos" || "$ID" == "athena" || "$ID_LIKE" == *"arch"* ]]; then
+    # SteamOS/Athena/Arch Linux logic
     PKG="pacman"
 else
-    echo "Unsupported Linux distribution. Aborting."
+    echo "Aborting! Unsupported Linux distribution: $NAME $VERSION_ID ($ID)"
     exit 1
 fi
 
@@ -256,8 +294,9 @@ fi
 
 echo "__________________________________________________________________"
 echo ""
-echo "Install new packages required for Delphi & FMXLinux"
+echo "Installing packages required for Delphi & FMXLinux"
 echo "https://docwiki.embarcadero.com/RADStudio/en/Linux_Application_Development"
+osmesa=
 if [[ "$PKG" == "apt" ]]; then
     # Determine the correct ncurses package
     if apt-cache show libncurses6 2>/dev/null | grep -q 'Package:'; then
@@ -277,7 +316,6 @@ if [[ "$PKG" == "apt" ]]; then
     set -e
     # Removed libosmesa-dev from strict requirements
     apt install joe wget p7zip-full curl build-essential zlib1g-dev libcurl4-gnutls-dev python3 libpython3-dev libgtk-3-dev $NCURSES_PKG xorg libgl1-mesa-dev libgtk-3-bin libc6-dev -y
-    omesa=
     # Optional installation of OSMesa (handles missing package errors gracefully)
     echo "Attempting to install optional libosmesa-dev..."
     set +e
@@ -286,14 +324,14 @@ if [[ "$PKG" == "apt" ]]; then
         echo "libosmesa-dev not found, checking for libosmesa6-dev..."
         apt install libosmesa6-dev -y 2>/dev/null
         if [ $? -ne 0 ]; then
-             omesa = "Warning: Optional package libosmesa-dev (or libosmesa6-dev) was not found. Continuing installation without it."
+             osmesa = "Warning: Optional package libosmesa-dev (or libosmesa6-dev) was not found. Continuing installation without it."
         else
-             omesa = "Installed optional libosmesa6-dev successfully."
+             osmesa = "Installed optional libosmesa6-dev successfully."
         fi
     else
-        omesa = "Installed optional libosmesa-dev successfully."
+        osmesa = "Installed optional libosmesa-dev successfully."
     fi
-    echo $omesa
+    echo $osmesa
     set -e
 elif [[ "$PKG" == "pacman" ]]; then
     # SteamOS has a read-only filesystem, this command disables that.
@@ -314,8 +352,10 @@ elif [[ "$PKG" == "pacman" ]]; then
     # Upgrade and install packages
     pacman -Syu --needed --noconfirm openssh wget p7zip curl base-devel zlib python gtk3 ncurses xorg-server mesa
     
-    echo "Restoring original pacman configuration..."
-    mv /etc/pacman.conf.bak /etc/pacman.conf
+    if [-f "/etc/pacman.conf.bak"]; then
+        echo "Restoring original pacman configuration..."
+        mv /etc/pacman.conf.bak /etc/pacman.conf
+    fi
 else
     if [[ "$PKG" == "dnf" ]]; then
       if [[ ("$ID_LIKE" == *"fedora"* || "$ID" == "fedora") && "${VERSION_ID}" -ge 40 ]]; then
@@ -380,8 +420,10 @@ fi
 # Ensure ownership by the invoking user
 mkdir -p "$SCRATCH_DIR"
 # Give all users write access to the scratch directory
-chown "$SUDO_USER":"$SUDO_USER" "$SCRATCH_DIR"
-chmod a+rw "$SCRATCH_DIR"
+chgrp users "$SCRATCH_DIR"
+chmod g=rwx,o=rx "$SCRATCH_DIR"
+chown root:users "$SCRATCH_DIR"
+
 # Remove archive file
 rm "$INSTALL_DIR/$ARCHIVE"
 
@@ -390,7 +432,6 @@ if [ ! -f "$INSTALL_DIR/paserver" ]; then
     echo "PAServer installation failed. Aborting."
     exit 1
 fi
-
 
 echo "#!/bin/bash" >"$SCRIPT_PATH"
 echo ". /etc/os-release" >>"$SCRIPT_PATH"
@@ -413,14 +454,16 @@ if [ ! -f "$SCRIPT_PATH" ]; then
     exit 1
 fi 
 
-echo $omesa
-
 if [[ "$ID" == "steamos" ]]; then
     # Re-enable SteamOS read-only filesystem
     if command -v steamos-readonly &> /dev/null; then
         echo "Re-enabling SteamOS read-only filesystem..."
         steamos-readonly enable
     fi
+fi
+
+if [[ -n "$osmesa" ]]; then
+    echo $omesa
 fi
 
 echo "____________________________________________"
