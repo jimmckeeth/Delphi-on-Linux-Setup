@@ -179,23 +179,24 @@ else
     echo "Cannot determine Linux distribution. Aborting."
     exit 1
 fi
-if [[ "$ID" == "ubuntu" || "$ID" == "debian" || "$ID_LIKE" == *"debian"* || "$ID_LIKE" == *"ubuntu"* || "$ID" == "kali" ]]; then
+
+if [ "$(uname -m)" != "x86_64" ]; then
+    echo "This script requires a x86_64-bit operating system."
+    exit 1
+fi 
+
+if [[ -n "$PKG_OVERRIDE" ]]; then
+    PKG="$PKG_OVERRIDE"
+    echo "Manual override: Using package manager '$PKG'"
+elif [[ "$ID" == "ubuntu" || "$ID" == "debian" || "$ID_LIKE" == *"debian"* || "$ID_LIKE" == *"ubuntu"* || "$ID" == "kali" ]]; then
     # Ubuntu/Debian/Kali logic
     PKG="apt"
     if [[ ("$ID" == "ubuntu" && "$(echo "$VERSION_ID < 16.04" | bc)" -eq 1) || ("$ID" == "debian" && "$(echo "$VERSION_ID < 10" | bc)" -eq 1) ]]; then
         echo "This script requires at least Ubuntu 16.04 or Debian 10."
         exit 1
     fi
-    if [ "$(uname -m)" != "x86_64" ]; then
-        echo "This script requires a x86_64-bit operating system."
-        exit 1
-    fi  
 elif [[ "$ID" == "rhel" || "$ID" == "centos" || "$ID" == "fedora" || "$ID_LIKE" == *"rhel"* || "$ID_LIKE" == *"fedora"* ]]; then
     # RedHat/Fedora/CentOS logic
-    if [ "$(uname -m)" != "x86_64" ]; then
-        echo "This script requires a x86_64-bit operating system."
-        exit 1
-    fi
     if command -v dnf >/dev/null 2>&1; then
       PKG="dnf"
     else
