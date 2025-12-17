@@ -1,14 +1,19 @@
 # Delphi-on-Linux-Setup
-Scripts and resources to simplify the setup and development with Delphi on Linux. It should work with all x86 64-bit Linux distros that Delphi suports in WSL, Virtual Machines, or running on hardware natively. 
+
+Scripts and resources to simplify the setup and development with Delphi on Linux. It should work with all x86 64-bit Linux distros that Delphi suports in WSL, Virtual Machines, or running on hardware natively.
 
 **Updated** to support Delphi 13 *Florence* (37.0)
 
 ## Usage
 
 The same script works for both RedHat/Fedora and Ubuntu/Debian. There are a number of other quality of life improvements too. To run it from the web:
+
 ```bash
-curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
+curl -fsSL https://tinyurl.com/SetupLinux4Delphi | sudo bash
 ```
+
+*Note*: Is is recommended to [review the script](scripts/SetupLinux4Delphi.sh) before running it in a *production* envorment. Also, curl is a requirement to run the above command. It is usually installed, but if you are missing it then run `sudo apt install curl -y` first.
+
 The installation location changed now, so it isn't user specific. Also, the same script supports earlier versions of Delphi. It defaults to the latest, but you can specify any different version:
 
 Usage: `sudo SetupLinux4Delphi.sh [version]`
@@ -42,7 +47,7 @@ I tested Delphi 13 Florence against the following distros with this script:
   * Ubuntu 20.04
   * Ubuntu 22.04
   * Ubuntu 24.04
-  * Kali Linux (rolling)
+  * Kali Linux Rolling 2.6.3.0
   * Debian 13 (trixie)
   * Pengwin (WSL)
 * Fedora bassed
@@ -52,17 +57,17 @@ I tested Delphi 13 Florence against the following distros with this script:
   * Alma Linux 9.6 (Safe Margay)
   * Oracle Linux Server 9.5
 
-I wasn't able to log into my Red Hat account to get the latest RHEL, but it is also Fedora based so it _should be fine_. 
+I wasn't able to log into my Red Hat account to get the latest RHEL, but it is also Fedora based so it *should be fine*.
 
 See the [Official Platform Support list](https://docwiki.embarcadero.com/PlatformStatus/en/Main_Page).
 
 It detects the distro and version and works with `apt`, `yum`, and `dnf` package managers as necessary. You can [view the full source](https://github.com/jimmckeeth/Delphi-on-Linux-Setup/blob/main/scripts/SetupLinux4Delphi.sh), which is recommended before running it on your hardware.
 
-## Installation changes:
+## Installation changes
 
-The old version of the script installed it based on the compiler version number, now it is based on the product version number. The reason for the name change is to support installation of multiple versions of PAServer. Technically both _12.0_ and _12.3_ are still **23.0**, so to allow installing both versions they need a unique name. I thought that was easier than using the _build number_.
+The old version of the script installed it based on the compiler version number, now it is based on the product version number. The reason for the name change is to support installation of multiple versions of PAServer. Technically both *12.0* and *12.3* are still **23.0**, so to allow installing both versions they need a unique name. I thought that was easier than using the *build number*.
 
-It defaults to a **blank password**. You should _probably_ change that.q
+It defaults to a **blank password**. You should *probably* change that.q
 
 The instalation locations are as follows:
 
@@ -74,7 +79,7 @@ Where `$PRODUCT` is 13.0, 12.2, etc. So you launch the *Florence* PAServer with 
 
 ## More information
 
-The installation of packages is based on the [DocWiki](https://docwiki.embarcadero.com/RADStudio/en/Linux_Application_Development), but with a few changes to address neuances of different distros & installs. If the script doesn't work on your distro of choice then see if the original DocWiki instructions do, and if that still doesn't work, then you distro or installation might not be supported. 
+The installation of packages is based on the [DocWiki](https://docwiki.embarcadero.com/RADStudio/en/Linux_Application_Development), but with a few changes to address neuances of different distros & installs. If the script doesn't work on your distro of choice then see if the original DocWiki instructions do, and if that still doesn't work, then you distro or installation might not be supported.
 
 DocWiki Links:
 
@@ -93,10 +98,11 @@ This was originally a series of [GISTs](https://gist.github.com/jimmckeeth/1cb65
 
 ## Installing Ubuntu with WSL2 on Windows 11
 
-Microsoft has a [full article](https://docs.microsoft.com/en-us/windows/wsl/install) with all the details. This is a summary for quick reference. 
+Microsoft has a [full article](https://docs.microsoft.com/en-us/windows/wsl/install) with all the details. This is a summary for quick reference.
 
 On Windows you need to do this from an elevated (administrator) command prompt or PowerShell window. Easiest way is **Win+X,A**.
-```
+
+```pwsh
 wsl --install -d Ubuntu
 ```
 
@@ -106,9 +112,6 @@ Start Ubuntu from the start menu, or from the terminal by typing `ubuntu`
 
 ### Then run the following script
 
-```
+```bash
 curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
 ```
-
-If you don't have curl installed then run `sudo apt install curl -y` first
-

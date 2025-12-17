@@ -1,14 +1,14 @@
 #!/bin/bash
 # 
 # Single step download and execute with the following:
-# curl -L https://tinyurl.com/SetupLinux4Delphi | sudo bash
+# curl -fsSL https://tinyurl.com/SetupLinux4Delphi | sudo bash
 #
 echo "_____________________________________________________________"
 echo ""
 echo "Setup Linux for Delphi development version 2024-06-10"
 echo "_____________________________________________________________"
 echo ""
-echo "This script requires sudo, su, or root privileges."
+echo "This script requires sudo privileges and curl."
 echo "More info: https://github.com/jimmckeeth/Delphi-on-Linux-Setup"
 echo ""
 # Stop on all errors
@@ -219,6 +219,13 @@ fi
 if [ $? -ne 0 ]; then
     echo "Update failed. Aborting."
     exit 1
+fi
+
+if [[ "$PKG" == "apt" ]]; then
+    # Pre-install keyboard-configuration to avoid interactive prompts that can hang on fresh installs
+    # This prevents the "Ctrl chars" issue on fresh Debian setups
+    echo "Pre-configuring keyboard-configuration..."
+    DEBIAN_FRONTEND=noninteractive apt install -y keyboard-configuration
 fi
 
 echo "__________________________________________________________________"
