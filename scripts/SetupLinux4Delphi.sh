@@ -244,7 +244,7 @@ elif [[ "$ID" == "rhel" || "$ID" == "centos" || "$ID" == "fedora" || "$ID_LIKE" 
     else
       PKG="yum"
     fi
-elif [[ "$ID" == "steamos" || "$ID" == "athena" || "$ID_LIKE" == *"arch"* ]]; then
+elif [[ "$ID" == "steamos" || "$ID" == "athena" || "$ID" == "arch" || "$ID_LIKE" == *"arch"* ]]; then
     # SteamOS/Athena/Arch Linux logic
     PKG="pacman"
 else
