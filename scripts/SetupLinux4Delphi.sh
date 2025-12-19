@@ -2,14 +2,16 @@
 # 
 # Single step download and execute with the following:
 # curl -fsSL https://tinyurl.com/SetupLinux4Delphi | sudo bash
+#  or
+# wget -q -O https://tinyurl.com/SetupLinux4Delphi | sudo bash
 #
 echo "_____________________________________________________________"
 echo ""
-echo "Setup Linux for Delphi development version 2025-12-16.6"
+echo "Setup Linux for Delphi development version 2025-12-19"
 echo "_____________________________________________________________"
 echo ""
-echo "This script requires sudo privileges and curl."
-echo "More info: https://github.com/jimmckeeth/Delphi-on-Linux-Setup"
+echo "This script requires sudo privileges"
+echo "More info: https://github.com/jimmckeeth/Linux4Delphi"
 echo ""
 # Stop on all errors
 set -e
@@ -22,6 +24,20 @@ fi
 # Parse arguments
 PARAM="37.0" # Default version
 PKG_OVERRIDE=""
+
+# Function to download files using whichever tool is available
+download_file() {
+    local url=$1
+    local dest=$2
+    if command -v wget >/dev/null 2>&1; then
+        wget -q -O "$dest" "$url"
+    elif command -v curl >/dev/null 2>&1; then
+        curl -fsSL -o "$dest" "$url"
+    else
+        echo "❌ Error: Neither wget nor curl found. Please install one to continue."
+        exit 1
+    fi
+}
 
 while [[ $# -gt 0 ]]; do
   key="$(echo "$1" | tr '[:upper:]' '[:lower:]')"
@@ -374,8 +390,8 @@ if ! mkdir -p "$INSTALL_DIR"; then
 fi
 echo "__________________________________________________________________"
 echo ""
-echo "Downloading Linux PAServer "
-wget -O "$INSTALL_DIR/$ARCHIVE" "$PASERVER_URL"
+echo "Downloading Linux PAServer"
+download_file "$PASERVER_URL" "$INSTALL_DIR/$ARCHIVE"
 echo "__________________________________________________________________"
 echo ""
 if ! tar xvf "$INSTALL_DIR/$ARCHIVE" -C "$INSTALL_DIR" --strip-components=1; then
@@ -420,7 +436,7 @@ echo ""
 echo "Install dir: $INSTALL_DIR  " 
 echo "Script path: $SCRIPT_PATH  " 
 echo "Scratch dir: $SCRATCH_DIR " 
-echo "Password is BLANK (none)  " 
+echo "Password is BLANK (none) so you might want to change that..." 
 echo "________________________________________"
 echo "" 
 # https://docwiki.embarcadero.com/RADStudio/en/Setting_Options_for_the_Platform_Assistant

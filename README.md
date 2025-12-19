@@ -1,9 +1,8 @@
 # Linux4Delphi Setup
 
-![ShellCheck](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=shellcheck&label=ShellCheck&logo=shell)
-![Ubuntu 24.04](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=ubuntu_test&label=Ubuntu%2024.04&logo=ubuntu)
-![RHEL 10](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=rhel_test&label=RHEL%2010&logo=redhat)
-
+![ShellCheck](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=shellcheck&label=ShellCheck&logo=shell&version=1)
+![Ubuntu 24.04](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=ubuntu_test&label=Ubuntu%2024.04&logo=ubuntu&version=1)
+![RHEL 10](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=rhel_test&label=RHEL%2010&logo=redhat&version=1)
 
 **Update**: This was formerly known as *Delphi-on-Linux-Setup*, but it has been renamed to *Linux4Delphi* to better reflect the scope of the project. Update your bookmarks and references accordingly.
 
@@ -17,15 +16,21 @@ Supporting Delphi 10.2 *Tokyo* (19.0) through Delphi 13 *Florence* (37.0)
 
 ## Usage
 
-The same script works for both RedHat/Fedora and Ubuntu/Debian. There are a number of other quality of life improvements too. To run it from the web:
+The same script works for both RedHat/Fedora and Ubuntu/Debian. There are a number of other quality of life improvements too. To run it from the web use either of the following commands:
 
 ```bash
 curl -fsSL https://tinyurl.com/SetupLinux4Delphi | sudo bash 
 ```
 
-⚠️*Warning*: Is is recommended to [locally review the script](scripts/SetupLinux4Delphi.sh) before running it in a *production* envorment. Also, curl is a requirement to run the above command. It is usually installed, but if you are missing it then run `sudo apt install curl -y` first.
+If you don't have curl you can use wget instead (Debian usually excludes curl by default):
 
-✅*Update*: To improve performance, especially if testing in a containerized environment, calls to `apt`, `yum`, & `dnf`use  `--no-install-recommends` or `--setopt=install_weak_deps=False` respectively, which prevents the installation of *recommended packages*, which are not essential for the core functionality. Not only does that save time and disk space, but it makes the script less likely to chage unrelated packages you might need.
+```bash
+wget -q -O https://tinyurl.com/SetupLinux4Delphi | sudo bash 
+```
+
+⚠️*Warning*: Is is recommended to [locally review the script](scripts/SetupLinux4Delphi.sh) before running it in a *production* envorment.
+
+✅*Update*: To improve performance, especially if testing in a containerized environment, calls to `apt`, `yum`, & `dnf` use  `--no-install-recommends` or `--setopt=install_weak_deps=False` respectively, which prevents the installation of *recommended packages*, that are not essential for the core functionality. It also makes the script less likely to change unrelated packages you might need.
 
 The installation location changed now, so it isn't user specific. Also, the same script supports earlier versions of Delphi. It defaults to the latest, but you can specify any different version:
 
