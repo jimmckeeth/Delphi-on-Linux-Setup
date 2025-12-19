@@ -271,14 +271,14 @@ if [[ "$PKG" == "apt" ]]; then
     # Pre-install keyboard-configuration to avoid interactive prompts that can hang on fresh installs
     # This prevents the "Ctrl chars" issue on fresh Debian setups
     echo "Pre-configuring keyboard-configuration..."
-    DEBIAN_FRONTEND=noninteractive apt install -y keyboard-configuration
+    DEBIAN_FRONTEND=noninteractive apt install keyboard-configuration --no-install-recommends -y 
 fi
 
 echo "__________________________________________________________________"
 echo ""
 echo "Upgrading any outdated packages"
 if [[ "$PKG" == "apt" ]]; then
-    apt dist-upgrade -y
+    apt dist-upgrade --no-install-recommends -y
     if [ $? -ne 0 ]; then
         echo "Upgrade failed. Aborting."
         exit 1
@@ -308,21 +308,21 @@ if [[ "$PKG" == "apt" ]]; then
       exit 1
     fi
     set +e
-    apt install openssh-server -y
+    apt install openssh-server -y --no-install-recommends
     if [ $? -ne 0 ]; then
       echo "Warning: openssh-server installation failed, removing..."
-      apt purge openssh-server -y
+      apt purge openssh-server -y 
     fi
     set -e
     # Removed libosmesa-dev from strict requirements
-    apt install joe wget p7zip-full curl build-essential zlib1g-dev libcurl4-gnutls-dev python3 libpython3-dev libgtk-3-dev $NCURSES_PKG xorg libgl1-mesa-dev libgtk-3-bin libc6-dev -y
+    apt install joe wget p7zip-full curl build-essential zlib1g-dev libcurl4-gnutls-dev python3 libpython3-dev libgtk-3-dev $NCURSES_PKG xorg libgl1-mesa-dev libgtk-3-bin libc6-dev -y --no-install-recommends
     # Optional installation of OSMesa (handles missing package errors gracefully)
     echo "Attempting to install optional libosmesa-dev..."
     set +e
-    apt install libosmesa-dev -y 2>/dev/null
+    apt install libosmesa-dev -y --no-install-recommends 2>/dev/null
     if [ $? -ne 0 ]; then
         echo "libosmesa-dev not found, checking for libosmesa6-dev..."
-        apt install libosmesa6-dev -y 2>/dev/null
+        apt install libosmesa6-dev -y --no-install-recommends  2>/dev/null
         if [ $? -ne 0 ]; then
              osmesa = "Warning: Optional package libosmesa-dev (or libosmesa6-dev) was not found. Continuing installation without it."
         else

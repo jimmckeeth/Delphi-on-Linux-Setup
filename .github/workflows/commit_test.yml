@@ -1,0 +1,88 @@
+name: Phase 0 - On-Commit Tests
+
+on:
+  push:
+    branches: [ main, test** ]
+  pull_request:
+    branches: [ main, test** ]
+
+jobs:
+  # Phase 0.2: Static Analysis
+  shellcheck:
+    name: Phase 0.2 - ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './scripts'
+          severity: error
+
+  # Phase 0: Ubuntu Testing
+  ubuntu_test:
+    name: Phase 0 - Ubuntu 24.04
+    needs: shellcheck
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Make Script Executable
+        run: chmod +x ./scripts/SetupLinux4Delphi.sh
+
+      - name: Run Setup Script
+        # Executes the script for Delphi 13 (Florence/37.0)
+        run: sudo ./scripts/SetupLinux4Delphi.sh 13.0
+
+      - name: Verify Installation Files
+        run: |
+          if [ -x "/usr/local/bin/pa13.0.sh" ]; then
+            echo "✅ PAServer launch script found."
+          else
+            echo "❌ PAServer launch script missing."
+            exit 1
+          fi
+
+      - name: Test PAServer Execution
+        run: |
+          /usr/local/bin/pa13.0.sh &
+          sleep 10
+          pgrep paserver && echo "✅ PAServer is running." || (echo "❌ PAServer failed"; exit 1)
+
+  # Phase 0.1: RHEL Testing
+  rhel_test:
+    name: Phase 0.1 - RHEL 10 (UBI)
+    needs: shellcheck
+    runs-on: ubuntu-latest
+    container:
+      image: redhat/ubi10:latest # Targeted version for Delphi 13
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Basic Dependencies
+        # UBI images are minimal; need sudo and procps for pgrep
+        run: dnf install -y sudo procps-ng
+
+      - name: Make Script Executable
+        run: chmod +x ./scripts/SetupLinux4Delphi.sh
+
+      - name: Run Setup Script
+        # RHEL uses dnf/yum logic in your script
+        run: ./scripts/SetupLinux4Delphi.sh 13.0
+
+      - name: Verify Installation Files
+        run: |
+          if [ -x "/usr/local/bin/pa13.0.sh" ]; then
+            echo "✅ PAServer launch script found."
+          else
+            echo "❌ PAServer launch script missing."
+            exit 1
+          fi
+
+      - name: Test PAServer Execution
+        run: |
+          /usr/local/bin/pa13.0.sh &
+          sleep 10
+          pgrep paserver && echo "✅ PAServer is running." || (echo "❌ PAServer failed"; exit 1)
