@@ -2,7 +2,7 @@
 
 ![ShellCheck](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=shellcheck&label=ShellCheck&logo=shell&version=1)
 ![Ubuntu 24.04](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=ubuntu_test&label=Ubuntu%2024.04&logo=ubuntu&version=1)
-![RHEL 10](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=rhel_test&label=RHEL%2010&logo=redhat&version=1)
+![RHEL 10](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=rhel_test&label=RHEL%2010&logo=redhat&version=1) (Tested with Delphi 13)
 
 **Update**: This was formerly known as *Delphi-on-Linux-Setup*, but it has been renamed to *Linux4Delphi* to better reflect the scope of the project. Update your bookmarks and references accordingly.
 

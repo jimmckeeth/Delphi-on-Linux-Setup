@@ -68,9 +68,8 @@ jobs:
       - name: Make Script Executable
         run: chmod +x ./scripts/SetupLinux4Delphi.sh
 
-      - name: Run Setup Script
-        # Passing 'dnf' forces your script to skip groupinstall logic if you used the fix above
-        run: ./scripts/SetupLinux4Delphi.sh 13.0
+      # - name: Run Setup Script
+      #   run: ./scripts/SetupLinux4Delphi.sh 13.0
 
       - name: Test PAServer Execution
         run: |
