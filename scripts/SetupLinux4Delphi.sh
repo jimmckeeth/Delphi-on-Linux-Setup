@@ -346,17 +346,11 @@ elif [[ "$PKG" == "pacman" ]]; then
         echo "Restoring original pacman configuration..."
         mv /etc/pacman.conf.bak /etc/pacman.conf
     fi
-else
-    if [[ "$PKG" == "dnf" ]]; then
-      if [[ ("$ID_LIKE" == *"fedora"* || "$ID" == "fedora") && "${VERSION_ID%%.*}" -ge 40 ]]; then
-        dnf group install c-development development-tools --setopt=install_weak_deps=False -y
-      else
-        dnf groupinstall 'Development Tools' --setopt=install_weak_deps=False -y
-      fi
-    else
-      yum groupinstall 'Development Tools' --setopt=install_weak_deps=False -y
-    fi
-    $PKG install wget gtk3 mesa-libGL gtk3-devel python3 zlib-devel python3-devel --setopt=install_weak_deps=False -y
+    # Install individual tools instead of groups to ensure compatibility with minimal UBI containers
+    echo "Installing core development tools and dependencies..."
+    $PKG install -y gcc gcc-c++ make binutils autoconf automake \
+        wget gtk3 mesa-libGL gtk3-devel python3 zlib-devel python3-devel \
+        --setopt=install_weak_deps=False
 fi
 
 echo "__________________________________________________________________"

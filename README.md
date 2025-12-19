@@ -15,7 +15,6 @@ Supporting Delphi 10.2 *Tokyo* (19.0) through Delphi 13 *Florence* (37.0)
   <img src="images/Linux4Delphi-Logo-256px.webp" align="right" alt="Linux4Delphi Logo" width="256" height="520" vspace="10" hspace="10" />
 </a>
 
-
 ## Usage
 
 The same script works for both RedHat/Fedora and Ubuntu/Debian. There are a number of other quality of life improvements too. To run it from the web:

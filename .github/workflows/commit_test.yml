@@ -70,7 +70,7 @@ jobs:
 
       - name: Run Setup Script
         # Passing 'dnf' forces your script to skip groupinstall logic if you used the fix above
-        run: ./scripts/SetupLinux4Delphi.sh 13.0 dnf
+        run: ./scripts/SetupLinux4Delphi.sh 13.0
 
       - name: Test PAServer Execution
         run: |
