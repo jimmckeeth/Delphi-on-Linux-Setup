@@ -304,32 +304,25 @@ if [[ "$PKG" == "apt" ]]; then
       echo "No suitable ncurses package found."
       exit 1
     fi
-    set +e
-    apt install openssh-server -y --no-install-recommends
-    if [ $? -ne 0 ]; then
+    if ! apt install openssh-server -y --no-install-recommends; then
       echo "Warning: openssh-server installation failed, removing..."
       apt purge openssh-server -y 
     fi
-    set -e
     # Removed libosmesa-dev from strict requirements
     apt install joe wget p7zip-full curl build-essential zlib1g-dev libcurl4-gnutls-dev python3 libpython3-dev libgtk-3-dev $NCURSES_PKG xorg libgl1-mesa-dev libgtk-3-bin libc6-dev -y --no-install-recommends
     # Optional installation of OSMesa (handles missing package errors gracefully)
     echo "Attempting to install optional libosmesa-dev..."
-    set +e
-    apt install libosmesa-dev -y --no-install-recommends 2>/dev/null
-    if [ $? -ne 0 ]; then
-        echo "libosmesa-dev not found, checking for libosmesa6-dev..."
-        apt install libosmesa6-dev -y --no-install-recommends  2>/dev/null
-        if [ $? -ne 0 ]; then
-             osmesa="Warning: Optional package libosmesa-dev (or libosmesa6-dev) was not found. Continuing installation without it."
-        else
-             osmesa="Installed optional libosmesa6-dev successfully."
-        fi
-    else
+    if apt install libosmesa-dev -y --no-install-recommends 2>/dev/null; then
         osmesa="Installed optional libosmesa-dev successfully."
+    else
+        echo "libosmesa-dev not found, checking for libosmesa6-dev..."
+        if apt install libosmesa6-dev -y --no-install-recommends  2>/dev/null; then
+             osmesa="Installed optional libosmesa6-dev successfully."
+        else
+             osmesa="Warning: Optional package libosmesa-dev (or libosmesa6-dev) was not found. Continuing installation without it."
+        fi
     fi
     echo "$osmesa"
-    set -e
 elif [[ "$PKG" == "pacman" ]]; then
     # SteamOS has a read-only filesystem, this command disables that.
     if command -v steamos-readonly &> /dev/null; then
@@ -355,7 +348,7 @@ elif [[ "$PKG" == "pacman" ]]; then
     fi
 else
     if [[ "$PKG" == "dnf" ]]; then
-      if [[ ("$ID_LIKE" == *"fedora"* || "$ID" == "fedora") && "${VERSION_ID}" -ge 40 ]]; then
+      if [[ ("$ID_LIKE" == *"fedora"* || "$ID" == "fedora") && "${VERSION_ID%%.*}" -ge 40 ]]; then
         dnf group install c-development development-tools --setopt=install_weak_deps=False -y
       else
         dnf groupinstall 'Development Tools' --setopt=install_weak_deps=False -y
@@ -364,10 +357,6 @@ else
       yum groupinstall 'Development Tools' --setopt=install_weak_deps=False -y
     fi
     $PKG install wget gtk3 mesa-libGL gtk3-devel python3 zlib-devel python3-devel --setopt=install_weak_deps=False -y
-fi
-if [ $? -ne 0 ]; then
-    echo "Package installation failed. Aborting."
-    exit 1
 fi
 
 echo "__________________________________________________________________"
@@ -405,11 +394,11 @@ fi
 if [[ "$PRODUCT" == "11.2" ]]; then
     echo "Fixing lldb Python dependency"
     if [[ "$PKG" == "apt" ]]; then
-        ln -sf "$(ls -1 /usr/lib/x86_64-linux-gnu/libpython3.*.so.1.0 | tail -1)" "$INSTALL_DIR"/lldb/lib/libpython3.so
+        ln -sf "$(find /usr/lib/x86_64-linux-gnu -maxdepth 1 -name "libpython3.*.so.1.0" | sort | tail -1)" "$INSTALL_DIR"/lldb/lib/libpython3.so
     elif [[ "$PKG" == "pacman" ]]; then
-        ln -sf "$(ls -1 /usr/lib/libpython3.*.so | tail -1)" "$INSTALL_DIR"/lldb/lib/libpython3.so
+        ln -sf "$(find /usr/lib -maxdepth 1 -name "libpython3.*.so" | sort | tail -1)" "$INSTALL_DIR"/lldb/lib/libpython3.so
     else
-        ln -sf "$(ls -1 /usr/lib64/libpython3*.so.1.0 | tail -1)" "$INSTALL_DIR"/lldb/lib/libpython3.so
+        ln -sf "$(find /usr/lib64 -maxdepth 1 -name "libpython3*.so.1.0" | sort | tail -1)" "$INSTALL_DIR"/lldb/lib/libpython3.so
     fi
 fi
 # Ensure ownership by the invoking user

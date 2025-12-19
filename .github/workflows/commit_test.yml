@@ -55,30 +55,22 @@ jobs:
     needs: shellcheck
     runs-on: ubuntu-latest
     container:
-      image: redhat/ubi10:latest # Targeted version for Delphi 13
+      image: redhat/ubi10:latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install Basic Dependencies
-        # UBI images are minimal; need sudo and procps for pgrep
-        run: dnf install -y sudo procps-ng
+      - name: Prepare UBI Environment
+        # UBI requires manual installation of basic tools usually found in full distros
+        run: |
+          dnf install -y sudo procps-ng ncurses-devel tar
 
       - name: Make Script Executable
         run: chmod +x ./scripts/SetupLinux4Delphi.sh
 
       - name: Run Setup Script
-        # RHEL uses dnf/yum logic in your script
-        run: ./scripts/SetupLinux4Delphi.sh 13.0
-
-      - name: Verify Installation Files
-        run: |
-          if [ -x "/usr/local/bin/pa13.0.sh" ]; then
-            echo "✅ PAServer launch script found."
-          else
-            echo "❌ PAServer launch script missing."
-            exit 1
-          fi
+        # We pass "13.0" and force "dnf" to bypass registration checks
+        run: ./scripts/SetupLinux4Delphi.sh 13.0 dnf
 
       - name: Test PAServer Execution
         run: |

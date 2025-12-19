@@ -1,8 +1,8 @@
 # Linux4Delphi Setup
 
-[![ShellCheck Status](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml/badge.svg?label=ShellCheck)](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml)
-[![Ubuntu 24.04 Status](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml/badge.svg?label=Ubuntu%2024.04)](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml)
-[![RHEL 10 Status](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml/badge.svg?label=RHEL%2010)](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml)
+[![ShellCheck Status](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml/badge.svg?label=ShellCheck)](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml)
+[![Ubuntu 24.04 Status](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml/badge.svg?label=Ubuntu%2024.04)](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml)
+[![RHEL 10 Status](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml/badge.svg?label=RHEL%2010)](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml)
 
 
 ![ShellCheck](https://img.shields.io/github/actions/workflow/status/OWNER/REPOSITORY/commit_test.yml?job=shellcheck&label=ShellCheck&logo=shell)
