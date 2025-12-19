@@ -11,13 +11,13 @@
 
 Scripts and resources to simplify the setup and development with Delphi on Linux. It should work with all x86 64-bit Linux distros that Delphi suports in WSL, Virtual Machines, or running on hardware native.
 
-Supporting Delphi 10.2 *Tokyo* (19.0) through Delphi 13 *Florence* (37.0)
+Supporting Delphi 10.2 *Tokyo* (19.0) through Delphi 13 *Florence* (37.0), from one script. The installation location changed now, so it isn't user specific.
 
 <a href="images/Linux4Delphi-Logo.webp">
   <img src="images/Linux4Delphi-Logo-256px.webp" align="right" alt="Linux4Delphi Logo" width="256" height="520" vspace="10" hspace="10" />
 </a>
 
-## Usage
+## Basic Usage
 
 The same script works for both RedHat/Fedora and Ubuntu/Debian. There are a number of other quality of life improvements too. To run it from the web use either of the following commands:
 
@@ -35,7 +35,9 @@ wget -q -O https://tinyurl.com/SetupLinux4Delphi | sudo bash
 
 ✅*Update*: To improve performance, especially if testing in a containerized environment, calls to `apt`, `yum`, & `dnf` use  `--no-install-recommends` or `--setopt=install_weak_deps=False` respectively, which prevents the installation of *recommended packages*, that are not essential for the core functionality. It also makes the script less likely to change unrelated packages you might need.
 
-The installation location changed now, so it isn't user specific. Also, the same script supports earlier versions of Delphi. It defaults to the latest, but you can specify any different version:
+## Detailed Usage
+
+It defaults to the latest, but you can specify any version and optionally override the package manager detection.
 
 Usage: `sudo SetupLinux4Delphi.sh [version] [pkgmgr]`
 
@@ -61,14 +63,14 @@ Where [version] is one of the following:
 
 The less specific labels are the latest versions, while the more specific labels refer to the exact version.
 
-Experimental: [pkgmgr] parameter allows you to optionally override the os and package manager detection. Valid values are:
+*🧪Experimental:* [pkgmgr] parameter allows you to optionally override the os and package manager detection. Valid values are:
 
 * `apt`  - for Ubuntu/Debian based distros
 * `yum`  - for RedHat based distros
 * `dnf`  - for Fedora based distros
-* `pacman` - for Arch based distros (experimental, not fully tested)
+* `pacman` - for Arch based distros (🧪experimental, not fully tested)
 
-**Note**: Just because you can install it on a distro doesn't mean it is supported by Delphi. See the [Official Platform Support list](https://docwiki.embarcadero.com/PlatformStatus/en/Main_Page).
+**Note**: Just because you can install it on a distro doesn't mean it is supported by Delphi. See the [Official Platform Support list](https://docwiki.embarcadero.com/PlatformStatus/en/Main_Page). 
 
 ## Tested Distros
 
@@ -80,18 +82,18 @@ I tested Delphi 13 Florence against the following distros with this script:
   * Ubuntu 22.04
   * Ubuntu 24.04
   * Kali Linux Rolling 2.6.3.0
-  * Debian 13 (trixie) - Requires a manual curl install first: `sudo apt install curl -y`
+  * Debian 13 (trixie)
   * Pengwin (WSL)
 * Fedora bassed
   * Fedora Linux 42
   * Fedora Remix for WSL
   * Rocky Linux 9.6 (Blue Onyx)
   * Alma Linux 9.6 (Safe Margay)
+  * RHEL 10
   * Oracle Linux Server 9.5
 * Other
-  * Steam OS 3.7.17 (Arch based) - *experimental* with partial support. The SDK import misses some libraries, so if build against a different SDK then I was able to run it on Steam OS. If you can track down the issues then please file an issue or PR.
-
-I wasn't able to log into my Red Hat account to get the latest RHEL, but it is also Fedora based so it *should be fine*.
+  * Arch Linux (WSL) - *🧪 experimental*
+  * Steam OS 3.7.17 (Arch based) - *🧪 experimental* with partial support. The SDK import misses some libraries, so if build against a different SDK then I was able to run it on Steam OS. If you can track down the issues then please file an issue or PR.
 
 See the [Official Platform Support list](https://docwiki.embarcadero.com/PlatformStatus/en/Main_Page).
 
