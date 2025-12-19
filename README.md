@@ -1,4 +1,8 @@
-# Linux4Delphi Setup<a href="images/Linux4Delphi-Logo.webp"><img src="images/Linux4Delphi-Logo-256px.webp" alt="Linux4Delphi Logo" width="256" height="520" style="float: right; margin: 0 0 10px 10px;"/></a>
+# Linux4Delphi Setup
+
+<a href="images/Linux4Delphi-Logo.webp">
+  <img src="images/Linux4Delphi-Logo-256px.webp" align="right" alt="Linux4Delphi Logo" width="256" height="520" vspace="10" hspace="10" />
+</a>
 
 **Note**: This was formerly known as *Delphi-on-Linux-Setup*, but it has been renamed to *Linux4Delphi* to better reflect the scope of the project. Update your bookmarks and references accordingly.
 

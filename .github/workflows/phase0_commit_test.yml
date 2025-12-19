@@ -15,6 +15,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Make Script Executable
+        run: chmod +x ./scripts/SetupLinux4Delphi.sh
+
       - name: Run Setup Script
         # Executes the script for Delphi 13 (Florence/37.0)
         run: sudo ./scripts/SetupLinux4Delphi.sh 13.0
