@@ -352,7 +352,7 @@ elif [[ "$PKG" == "pacman" ]]; then
     # Upgrade and install packages
     pacman -Syu --needed --noconfirm openssh wget p7zip curl base-devel zlib python gtk3 ncurses xorg-server mesa
     
-    if [-f "/etc/pacman.conf.bak"]; then
+    if [ -f "/etc/pacman.conf.bak" ]; then
         echo "Restoring original pacman configuration..."
         mv /etc/pacman.conf.bak /etc/pacman.conf
     fi

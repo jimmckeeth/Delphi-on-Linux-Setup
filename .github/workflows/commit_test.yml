@@ -1,4 +1,4 @@
-name: Phase 0 - On-Commit Tests
+name: Commit Tests
 
 on:
   push:
