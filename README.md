@@ -1,23 +1,20 @@
 # Linux4Delphi Setup
 
-[![ShellCheck Status](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml/badge.svg?label=ShellCheck)](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml)
-[![Ubuntu 24.04 Status](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml/badge.svg?label=Ubuntu%2024.04)](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml)
-[![RHEL 10 Status](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml/badge.svg?label=RHEL%2010)](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml)
+![ShellCheck](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=shellcheck&label=ShellCheck&logo=shell)
+![Ubuntu 24.04](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=ubuntu_test&label=Ubuntu%2024.04&logo=ubuntu)
+![RHEL 10](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_test.yml?job=rhel_test&label=RHEL%2010&logo=redhat)
 
 
-![ShellCheck](https://img.shields.io/github/actions/workflow/status/OWNER/REPOSITORY/commit_test.yml?job=shellcheck&label=ShellCheck&logo=shell)
-![Ubuntu 24.04](https://img.shields.io/github/actions/workflow/status/OWNER/REPOSITORY/commit_test.yml?job=ubuntu_test&label=Ubuntu%2024.04&logo=ubuntu)
-![RHEL 10](https://img.shields.io/github/actions/workflow/status/OWNER/REPOSITORY/commit_test.yml?job=rhel_test&label=RHEL%2010&logo=redhat)
+**Update**: This was formerly known as *Delphi-on-Linux-Setup*, but it has been renamed to *Linux4Delphi* to better reflect the scope of the project. Update your bookmarks and references accordingly.
+
+Scripts and resources to simplify the setup and development with Delphi on Linux. It should work with all x86 64-bit Linux distros that Delphi suports in WSL, Virtual Machines, or running on hardware native.
+
+Supporting Delphi 10.2 *Tokyo* (19.0) through Delphi 13 *Florence* (37.0)
 
 <a href="images/Linux4Delphi-Logo.webp">
   <img src="images/Linux4Delphi-Logo-256px.webp" align="right" alt="Linux4Delphi Logo" width="256" height="520" vspace="10" hspace="10" />
 </a>
 
-**Note**: This was formerly known as *Delphi-on-Linux-Setup*, but it has been renamed to *Linux4Delphi* to better reflect the scope of the project. Update your bookmarks and references accordingly.
-
-Scripts and resources to simplify the setup and development with Delphi on Linux. It should work with all x86 64-bit Linux distros that Delphi suports in WSL, Virtual Machines, or running on hardware native.
-
-Supporting Delphi 10.2 *Tokyo* (19.0) through Delphi 13 *Florence* (37.0)
 
 ## Usage
 
