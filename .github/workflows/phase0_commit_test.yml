@@ -1,0 +1,42 @@
+name: Phase 0 - On-Commit Smoke Test
+
+on:
+  push:
+    branches: [ main, test** ]
+  pull_request:
+    branches: [ main, test** ]
+
+jobs:
+  ubuntu_test:
+    name: Test Delphi 13 on Ubuntu 24.04
+    runs-on: ubuntu-24.04
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Setup Script
+        # Executes the script for Delphi 13 (Florence/37.0)
+        run: sudo ./scripts/SetupLinux4Delphi.sh 13.0
+        
+      - name: Verify Installation Files
+        # Checks if the generated launch script exists and is executable
+        run: |
+          if [ -x "/usr/local/bin/pa13.0.sh" ]; then
+            echo "✅ PAServer launch script found at /usr/local/bin/pa13.0.sh"
+          else
+            echo "❌ PAServer launch script missing or not executable"
+            exit 1
+          fi
+
+      - name: Test PAServer Execution
+        # Launches PAServer and verifies the process starts
+        run: |
+          /usr/local/bin/pa13.0.sh &
+          sleep 10
+          if pgrep paserver > /dev/null; then
+            echo "✅ PAServer process is running."
+          else
+            echo "❌ PAServer failed to start or process not found."
+            exit 1
+          fi

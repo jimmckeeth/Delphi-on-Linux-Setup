@@ -1,8 +1,10 @@
-# Delphi-on-Linux-Setup
+# Linux4Delphi Setup<a href="images/Linux4Delphi-Logo.webp"><img src="images/Linux4Delphi-Logo-256px.webp" alt="Linux4Delphi Logo" width="256" height="520" style="float: right; margin: 0 0 10px 10px;"/></a>
 
-Scripts and resources to simplify the setup and development with Delphi on Linux. It should work with all x86 64-bit Linux distros that Delphi suports in WSL, Virtual Machines, or running on hardware natively.
+**Note**: This was formerly known as *Delphi-on-Linux-Setup*, but it has been renamed to *Linux4Delphi* to better reflect the scope of the project. Update your bookmarks and references accordingly.
 
-**Updated** to support Delphi 13 *Florence* (37.0)
+Scripts and resources to simplify the setup and development with Delphi on Linux. It should work with all x86 64-bit Linux distros that Delphi suports in WSL, Virtual Machines, or running on hardware native.
+
+Supporting Delphi 10.2 *Tokyo* (19.0) through Delphi 13 *Florence* (37.0)
 
 ## Usage
 
