@@ -1,5 +1,14 @@
 # Linux4Delphi Setup
 
+[![ShellCheck Status](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml/badge.svg?label=ShellCheck)](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml)
+[![Ubuntu 24.04 Status](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml/badge.svg?label=Ubuntu%2024.04)](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml)
+[![RHEL 10 Status](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml/badge.svg?label=RHEL%2010)](https://github.com/OWNER/REPOSITORY/actions/workflows/commit_test.yml)
+
+
+![ShellCheck](https://img.shields.io/github/actions/workflow/status/OWNER/REPOSITORY/commit_test.yml?job=shellcheck&label=ShellCheck&logo=shell)
+![Ubuntu 24.04](https://img.shields.io/github/actions/workflow/status/OWNER/REPOSITORY/commit_test.yml?job=ubuntu_test&label=Ubuntu%2024.04&logo=ubuntu)
+![RHEL 10](https://img.shields.io/github/actions/workflow/status/OWNER/REPOSITORY/commit_test.yml?job=rhel_test&label=RHEL%2010&logo=redhat)
+
 <a href="images/Linux4Delphi-Logo.webp">
   <img src="images/Linux4Delphi-Logo-256px.webp" align="right" alt="Linux4Delphi Logo" width="256" height="520" vspace="10" hspace="10" />
 </a>
@@ -15,12 +24,12 @@ Supporting Delphi 10.2 *Tokyo* (19.0) through Delphi 13 *Florence* (37.0)
 The same script works for both RedHat/Fedora and Ubuntu/Debian. There are a number of other quality of life improvements too. To run it from the web:
 
 ```bash
-curl -fsSL https://tinyurl.com/SetupLinux4Delphi | sudo bash
+curl -fsSL https://tinyurl.com/SetupLinux4Delphi | sudo bash 
 ```
 
-*Warning*: Is is recommended to [locally review the script](scripts/SetupLinux4Delphi.sh) before running it in a *production* envorment. Also, curl is a requirement to run the above command. It is usually installed, but if you are missing it then run `sudo apt install curl -y` first.
+⚠️*Warning*: Is is recommended to [locally review the script](scripts/SetupLinux4Delphi.sh) before running it in a *production* envorment. Also, curl is a requirement to run the above command. It is usually installed, but if you are missing it then run `sudo apt install curl -y` first.
 
-*Update*: To improve performance, especially if testing in a containerized environment, the `apt upgrade` and `apt-intall` are called with `--no-install-recommends` which prevents the installation of *recommended packages*, which are not essential for the core functionality. Also, I don't want to update any packages you are procrastinating the installation of for whatever reason.
+✅*Update*: To improve performance, especially if testing in a containerized environment, calls to `apt`, `yum`, & `dnf`use  `--no-install-recommends` or `--setopt=install_weak_deps=False` respectively, which prevents the installation of *recommended packages*, which are not essential for the core functionality. Not only does that save time and disk space, but it makes the script less likely to chage unrelated packages you might need.
 
 The installation location changed now, so it isn't user specific. Also, the same script supports earlier versions of Delphi. It defaults to the latest, but you can specify any different version:
 

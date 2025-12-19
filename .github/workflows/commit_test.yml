@@ -7,9 +7,9 @@ on:
     branches: [ main, test** ]
 
 jobs:
-  # Phase 0.2: Static Analysis
+  # Static Analysis
   shellcheck:
-    name: Phase 0.2 - ShellCheck
+    name: ShellCheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,9 +19,9 @@ jobs:
           scandir: './scripts'
           severity: error
 
-  # Phase 0: Ubuntu Testing
+  # Ubuntu Testing
   ubuntu_test:
-    name: Phase 0 - Ubuntu 24.04
+    name: Delphi 13 on Ubuntu 24.04
     needs: shellcheck
     runs-on: ubuntu-24.04
     steps:
@@ -50,9 +50,8 @@ jobs:
           sleep 10
           pgrep paserver && echo "✅ PAServer is running." || (echo "❌ PAServer failed"; exit 1)
 
-  # Phase 0.1: RHEL Testing
   rhel_test:
-    name: Phase 0.1 - RHEL 10 (UBI)
+    name: Delphi 13 on RHEL 10
     needs: shellcheck
     runs-on: ubuntu-latest
     container:

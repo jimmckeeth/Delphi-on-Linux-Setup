@@ -182,17 +182,17 @@ case "$PARAM" in
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/20.0/PAServer/LinuxPAServer20.0.tar.gz"
     ;;
     # Tokyo
-    "10.2"|"tokyo"|"10.2.3")
-        COMPILER="19.0"
-        PRODUCT="10.2.3"
-        RELEASE="Tokyo"
-        PASERVER_URL="http://altd.embarcadero.com/releases/studio/19.0/PAServer/Release3/LinuxPAServer19.0.tar.gz"
-    ;;
     "10.2")
         COMPILER="19.0"
         PRODUCT="10.2.0"
         RELEASE="Tokyo"
         PASERVER_URL="http://altd.embarcadero.com/releases/studio/19.0/PAServer/LinuxPAServer19.0.tar.gz"
+    ;;
+    "tokyo"|"10.2.3")
+        COMPILER="19.0"
+        PRODUCT="10.2.3"
+        RELEASE="Tokyo"
+        PASERVER_URL="http://altd.embarcadero.com/releases/studio/19.0/PAServer/Release3/LinuxPAServer19.0.tar.gz"
     ;;
 esac
 
@@ -260,11 +260,10 @@ if [[ "$PKG" == "apt" ]]; then
     echo "__________________________________________________________________"
     echo ""
     echo "Updating the local package directory"
-    apt update -y
-fi
-if [ $? -ne 0 ]; then
-    echo "Update failed. Aborting."
-    exit 1
+    if ! apt update -y; then
+        echo "Update failed. Aborting."
+        exit 1
+    fi
 fi
 
 if [[ "$PKG" == "apt" ]]; then
@@ -278,14 +277,12 @@ echo "__________________________________________________________________"
 echo ""
 echo "Upgrading any outdated packages"
 if [[ "$PKG" == "apt" ]]; then
-    apt dist-upgrade --no-install-recommends -y
-    if [ $? -ne 0 ]; then
+    if ! apt dist-upgrade --no-install-recommends -y; then
         echo "Upgrade failed. Aborting."
         exit 1
     fi
 elif [[ "$PKG" != "pacman" ]]; then
-    $PKG upgrade -y
-    if [ $? -ne 0 ]; then
+    if ! $PKG upgrade -y; then
         echo "Upgrade failed. Aborting."
         exit 1
     fi
@@ -324,14 +321,14 @@ if [[ "$PKG" == "apt" ]]; then
         echo "libosmesa-dev not found, checking for libosmesa6-dev..."
         apt install libosmesa6-dev -y --no-install-recommends  2>/dev/null
         if [ $? -ne 0 ]; then
-             osmesa = "Warning: Optional package libosmesa-dev (or libosmesa6-dev) was not found. Continuing installation without it."
+             osmesa="Warning: Optional package libosmesa-dev (or libosmesa6-dev) was not found. Continuing installation without it."
         else
-             osmesa = "Installed optional libosmesa6-dev successfully."
+             osmesa="Installed optional libosmesa6-dev successfully."
         fi
     else
-        osmesa = "Installed optional libosmesa-dev successfully."
+        osmesa="Installed optional libosmesa-dev successfully."
     fi
-    echo $osmesa
+    echo "$osmesa"
     set -e
 elif [[ "$PKG" == "pacman" ]]; then
     # SteamOS has a read-only filesystem, this command disables that.
@@ -359,14 +356,14 @@ elif [[ "$PKG" == "pacman" ]]; then
 else
     if [[ "$PKG" == "dnf" ]]; then
       if [[ ("$ID_LIKE" == *"fedora"* || "$ID" == "fedora") && "${VERSION_ID}" -ge 40 ]]; then
-        dnf group install c-development development-tools -y
+        dnf group install c-development development-tools --setopt=install_weak_deps=False -y
       else
-        dnf groupinstall 'Development Tools' -y
+        dnf groupinstall 'Development Tools' --setopt=install_weak_deps=False -y
       fi
     else
-      yum groupinstall 'Development Tools' -y
+      yum groupinstall 'Development Tools' --setopt=install_weak_deps=False -y
     fi
-    $PKG install wget gtk3 mesa-libGL gtk3-devel python3 zlib-devel python3-devel -y
+    $PKG install wget gtk3 mesa-libGL gtk3-devel python3 zlib-devel python3-devel --setopt=install_weak_deps=False -y
 fi
 if [ $? -ne 0 ]; then
     echo "Package installation failed. Aborting."
@@ -380,16 +377,15 @@ if [[ "$PKG" == "apt" ]]; then
     apt autoremove -y
 elif [[ "$PKG" == "pacman" ]]; then
     if pacman -Qtdq > /dev/null; then
-        pacman -Rns --noconfirm $(pacman -Qtdq)
+        pacman -Rns --noconfirm "$(pacman -Qtdq)"
     fi
 else
     $PKG autoremove -y
 fi
 
 echo "Setting up directories for PAServer"
-rm -rf "$INSTALL_DIR"/*
-mkdir -p "$INSTALL_DIR"
-if [ $? -ne 0 ]; then
+rm -rf "${INSTALL_DIR:?}"/*
+if ! mkdir -p "$INSTALL_DIR"; then
     echo "Failed to create installation directory. Aborting."
     exit 1
 fi
@@ -399,8 +395,7 @@ echo "Downloading Linux PAServer "
 wget -O "$INSTALL_DIR/$ARCHIVE" "$PASERVER_URL"
 echo "__________________________________________________________________"
 echo ""
-tar xvf "$INSTALL_DIR/$ARCHIVE" -C "$INSTALL_DIR" --strip-components=1
-if [ $? -ne 0 ]; then
+if ! tar xvf "$INSTALL_DIR/$ARCHIVE" -C "$INSTALL_DIR" --strip-components=1; then
     echo "PAServer extraction failed. Aborting."
     exit 1
 fi
@@ -410,11 +405,11 @@ fi
 if [[ "$PRODUCT" == "11.2" ]]; then
     echo "Fixing lldb Python dependency"
     if [[ "$PKG" == "apt" ]]; then
-        ln -sf $(ls -1 /usr/lib/x86_64-linux-gnu/libpython3.*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
+        ln -sf "$(ls -1 /usr/lib/x86_64-linux-gnu/libpython3.*.so.1.0 | tail -1)" "$INSTALL_DIR"/lldb/lib/libpython3.so
     elif [[ "$PKG" == "pacman" ]]; then
-        ln -sf $(ls -1 /usr/lib/libpython3.*.so | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
+        ln -sf "$(ls -1 /usr/lib/libpython3.*.so | tail -1)" "$INSTALL_DIR"/lldb/lib/libpython3.so
     else
-        ln -sf $(ls -1 /usr/lib64/libpython3*.so.1.0 | tail -1) "$INSTALL_DIR"/lldb/lib/libpython3.so
+        ln -sf "$(ls -1 /usr/lib64/libpython3*.so.1.0 | tail -1)" "$INSTALL_DIR"/lldb/lib/libpython3.so
     fi
 fi
 # Ensure ownership by the invoking user
@@ -433,19 +428,21 @@ if [ ! -f "$INSTALL_DIR/paserver" ]; then
     exit 1
 fi
 
-echo "#!/bin/bash" >"$SCRIPT_PATH"
-echo ". /etc/os-release" >>"$SCRIPT_PATH"
-echo "echo \"Detected Linux distribution: \$NAME \$VERSION_ID (\$ID)\"" >>"$SCRIPT_PATH"
-echo "echo \"________________________________________\"" >>"$SCRIPT_PATH"
-echo "echo \"\" " >>"$SCRIPT_PATH"
-echo "echo \"Install dir: $INSTALL_DIR  \" " >>"$SCRIPT_PATH"
-echo "echo \"Script path: $SCRIPT_PATH  \" " >>"$SCRIPT_PATH"
-echo "echo \"Scratch dir: $SCRATCH_DIR \" " >>"$SCRIPT_PATH"
-echo "echo \"Password is BLANK (none)  \" " >>"$SCRIPT_PATH"
-echo "echo \"________________________________________\"" >>"$SCRIPT_PATH"
-echo "echo \"\" " >>"$SCRIPT_PATH"
-echo "# https://docwiki.embarcadero.com/RADStudio/en/Setting_Options_for_the_Platform_Assistant" >>"$SCRIPT_PATH"
-echo "$INSTALL_DIR/paserver -scratchdir=$SCRATCH_DIR -password= -port=64211" >>"$SCRIPT_PATH"
+cat <<EOF >"$SCRIPT_PATH"
+#!/bin/bash
+. /etc/os-release
+echo "Detected Linux distribution: \$NAME \$VERSION_ID (\$ID)"
+echo "________________________________________"
+echo "" 
+echo "Install dir: $INSTALL_DIR  " 
+echo "Script path: $SCRIPT_PATH  " 
+echo "Scratch dir: $SCRATCH_DIR " 
+echo "Password is BLANK (none)  " 
+echo "________________________________________"
+echo "" 
+# https://docwiki.embarcadero.com/RADStudio/en/Setting_Options_for_the_Platform_Assistant
+$INSTALL_DIR/paserver -scratchdir=$SCRATCH_DIR -password= -port=64211
+EOF
 chmod +x "$SCRIPT_PATH"
 
 # Verify the script
@@ -463,7 +460,7 @@ if [[ "$ID" == "steamos" ]]; then
 fi
 
 if [[ -n "$osmesa" ]]; then
-    echo $omesa
+    echo "$osmesa"
 fi
 
 echo "____________________________________________"
