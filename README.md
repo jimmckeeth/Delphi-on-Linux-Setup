@@ -18,7 +18,9 @@ The same script works for both RedHat/Fedora and Ubuntu/Debian. There are a numb
 curl -fsSL https://tinyurl.com/SetupLinux4Delphi | sudo bash
 ```
 
-*Note*: Is is recommended to [review the script](scripts/SetupLinux4Delphi.sh) before running it in a *production* envorment. Also, curl is a requirement to run the above command. It is usually installed, but if you are missing it then run `sudo apt install curl -y` first.
+*Warning*: Is is recommended to [locally review the script](scripts/SetupLinux4Delphi.sh) before running it in a *production* envorment. Also, curl is a requirement to run the above command. It is usually installed, but if you are missing it then run `sudo apt install curl -y` first.
+
+*Update*: To improve performance, especially if testing in a containerized environment, the `apt upgrade` and `apt-intall` are called with `--no-install-recommends` which prevents the installation of *recommended packages*, which are not essential for the core functionality. Also, I don't want to update any packages you are procrastinating the installation of for whatever reason.
 
 The installation location changed now, so it isn't user specific. Also, the same script supports earlier versions of Delphi. It defaults to the latest, but you can specify any different version:
 
