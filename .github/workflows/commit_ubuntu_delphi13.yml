@@ -1,0 +1,38 @@
+name: Commit Tests
+
+on:
+  push:
+    branches: [ main, test** ]
+  pull_request:
+    branches: [ main, test** ]
+
+jobs:
+  # Ubuntu Testing
+  ubuntu_test:
+    name: Delphi 13 on Ubuntu 24.04
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Make Script Executable
+        run: chmod +x ./scripts/SetupLinux4Delphi.sh
+
+      - name: Run Setup Script
+        # Executes the script for Delphi 13 (Florence/37.0)
+        run: sudo ./scripts/SetupLinux4Delphi.sh 13.0
+
+      - name: Verify Installation Files
+        run: |
+          if [ -x "/usr/local/bin/pa13.0.sh" ]; then
+            echo "✅ PAServer launch script found."
+          else
+            echo "❌ PAServer launch script missing."
+            exit 1
+          fi
+
+      - name: Test PAServer Execution
+        run: |
+          /usr/local/bin/pa13.0.sh &
+          sleep 10
+          pgrep paserver && echo "✅ PAServer is running." || (echo "❌ PAServer failed"; exit 1)
