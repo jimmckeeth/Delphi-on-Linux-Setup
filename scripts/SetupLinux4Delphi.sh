@@ -263,27 +263,6 @@ elif [[ "$ID" == "rhel" || "$ID" == "centos" || "$ID" == "fedora" || "$ID_LIKE" 
     else
       PKG="yum"
     fi
-
-    echo "RedHat/Fedora/CentOS logic"    
-
-    # Enable CRB/PowerTools for RHEL-based systems (version 8+) to provide gtk3-devel
-    if [[ -n "$VERSION_ID" && "${VERSION_ID%%.*}" -ge 8 ]]; then
-        echo "Enable CRB/PowerTools for RHEL-based systems (version 8+) to provide gtk3-devel..."
-        if [[ "$ID" == "rhel" ]] && command -v subscription-manager >/dev/null 2>&1; then
-             echo "Enabling CodeReady Builder repo for RHEL..."
-             # Use uname -m for architecture (x86_64)
-             subscription-manager repos --enable "codeready-builder-for-rhel-${VERSION_ID%%.*}-$(uname -m)-rpms" || true
-        elif command -v dnf >/dev/null 2>&1; then 
-             # For CentOS Stream, Rocky, Alma, etc.
-             echo "Enabling CRB/PowerTools repo..."
-             # Try to install dnf-plugins-core if config-manager is missing
-             if ! rpm -q dnf-plugins-core >/dev/null 2>&1; then
-                 $PKG install -y dnf-plugins-core 2>/dev/null || true
-             fi
-             dnf config-manager --set-enabled crb 2>/dev/null || true
-             dnf config-manager --set-enabled powertools 2>/dev/null || true
-        fi
-    fi
 elif [[ "$ID" == "steamos" || "$ID" == "athena" || "$ID" == "arch" || "$ID_LIKE" == *"arch"* ]]; then
     # SteamOS/Athena/Arch Linux logic
     PKG="pacman"
@@ -386,7 +365,7 @@ elif [[ "$PKG" == "pacman" ]]; then
         echo "Restoring original pacman configuration..."
         mv /etc/pacman.conf.bak /etc/pacman.conf
     fi
-else
+# else # does RHEL work without this?
     # Install individual tools instead of groups to ensure compatibility with minimal UBI containers
     echo "Installing core development tools and dependencies..."
     $PKG install -y gcc gcc-c++ make binutils autoconf automake \
