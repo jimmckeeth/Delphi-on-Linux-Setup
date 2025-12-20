@@ -1,0 +1,54 @@
+name: Linux4Delphi CI
+
+on:
+  push:
+    branches: [ main, test** ]
+  pull_request:
+    branches: [ main, test** ]
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './scripts'
+          severity: error
+
+  ubuntu_test:
+    name: Ubuntu 24.04
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run Setup
+        run: |
+          chmod +x ./scripts/SetupLinux4Delphi.sh
+          sudo ./scripts/SetupLinux4Delphi.sh 13.0
+      - name: Verify PAServer
+        run: |
+          /usr/local/bin/pa13.0.sh &
+          sleep 10
+          pgrep paserver
+
+  rhel_test:
+    name: RHEL 10
+    runs-on: ubuntu-latest
+    container:
+      image: redhat/ubi10:latest
+    steps:
+      - uses: actions/checkout@v5
+    #   - name: Install sudo
+    #     run: |
+    #       yum install -y sudo
+      - name: Run Setup
+        run: |
+          chmod +x ./scripts/SetupLinux4Delphi.sh
+          ./scripts/SetupLinux4Delphi.sh 13.0
+      - name: Verify PAServer
+        run: |
+          /usr/local/bin/pa13.0.sh &
+          sleep 15
+          pgrep paserver
