@@ -1,7 +1,7 @@
 # Linux4Delphi Setup
 
 [![ShellCheck status](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_shellcheck.yml?job=ShellCheck&label=ShellCheck&logo=shell)](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_shellcheck.yml)
-[![Ubuntu 24.04 with Delphi 13](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_ubuntu.yml?job=ubuntu_delphi13&label=Ubuntu%2024.04%20with%20Delphi%2013&logo=ubuntu&)](https://github.com/jimmckeeth/linux4delphi/actions/workflows/ubuntu_delphi13.yml)
+[![Ubuntu 24.04 with Delphi 13](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_ubuntu_delphi13.yml?job=ubuntu_delphi13&label=Ubuntu%2024.04%20with%20Delphi%2013&logo=ubuntu&)](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_ubuntu_delphi13.yml)
 [![RHEL 10](https://img.shields.io/github/actions/workflow/status/jimmckeeth/linux4delphi/commit_rhel_delphi13.yml?job=commit_rhel_delphi13&label=RHEL%2010%20with%20Delphi%2013&logo=redhat)](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_rhel_delphi13.yml)
 
 <!-- [![ShellCheck Status](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml/badge.svg?label=ShellCheck)](https://github.com/jimmckeeth/linux4delphi/actions/workflows/commit_test.yml)

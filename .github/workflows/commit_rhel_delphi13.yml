@@ -1,4 +1,4 @@
-name: Commit Tests
+name: Delphi 13 on RHEL 10
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
       image: redhat/ubi10:latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Prepare UBI Environment
         # UBI is missing basic tools required for script's execution
