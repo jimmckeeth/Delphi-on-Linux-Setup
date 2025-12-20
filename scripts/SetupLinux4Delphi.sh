@@ -3,7 +3,7 @@
 # Single step download and execute with the following:
 # curl -fsSL https://tinyurl.com/SetupLinux4Delphi | sudo bash
 #  or
-# wget -q -O https://tinyurl.com/SetupLinux4Delphi | sudo bash
+# wget -qO - https://tinyurl.com/SetupLinux4Delphi | sudo bash 
 #
 echo "_____________________________________________________________"
 echo ""
@@ -262,6 +262,24 @@ elif [[ "$ID" == "rhel" || "$ID" == "centos" || "$ID" == "fedora" || "$ID_LIKE" 
       PKG="dnf"
     else
       PKG="yum"
+    fi
+
+    # Enable CRB/PowerTools for RHEL-based systems (version 8+) to provide gtk3-devel
+    if [[ -n "$VERSION_ID" && "${VERSION_ID%%.*}" -ge 8 ]]; then
+        if [[ "$ID" == "rhel" ]] && command -v subscription-manager >/dev/null 2>&1; then
+             echo "Enabling CodeReady Builder repo for RHEL..."
+             # Use uname -m for architecture (x86_64)
+             subscription-manager repos --enable "codeready-builder-for-rhel-${VERSION_ID%%.*}-$(uname -m)-rpms" || true
+        elif command -v dnf >/dev/null 2>&1; then 
+             # For CentOS Stream, Rocky, Alma, etc.
+             echo "Enabling CRB/PowerTools repo..."
+             # Try to install dnf-plugins-core if config-manager is missing
+             if ! rpm -q dnf-plugins-core >/dev/null 2>&1; then
+                 $PKG install -y dnf-plugins-core 2>/dev/null || true
+             fi
+             dnf config-manager --set-enabled crb 2>/dev/null || true
+             dnf config-manager --set-enabled powertools 2>/dev/null || true
+        fi
     fi
 elif [[ "$ID" == "steamos" || "$ID" == "athena" || "$ID" == "arch" || "$ID_LIKE" == *"arch"* ]]; then
     # SteamOS/Athena/Arch Linux logic
