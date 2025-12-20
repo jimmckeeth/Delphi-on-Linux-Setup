@@ -369,7 +369,7 @@ else
     # Install individual tools instead of groups to ensure compatibility with minimal UBI containers
     echo "Installing core development tools and dependencies..."
     $PKG install -y gcc gcc-c++ make binutils autoconf automake \
-        wget gtk3 mesa-libGL gtk3-devel python3 zlib-devel python3-devel \
+        wget gtk3 mesa-libGL python3 zlib-devel python3-devel \
         tar procps-ng ncurses-devel \
         --setopt=install_weak_deps=False
 fi

@@ -40,9 +40,6 @@ jobs:
       image: redhat/ubi10:latest
     steps:
       - uses: actions/checkout@v5
-    #   - name: Install sudo
-    #     run: |
-    #       yum install -y sudo
       - name: Run Setup
         run: |
           chmod +x ./scripts/SetupLinux4Delphi.sh
