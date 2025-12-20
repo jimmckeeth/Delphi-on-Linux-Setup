@@ -264,8 +264,11 @@ elif [[ "$ID" == "rhel" || "$ID" == "centos" || "$ID" == "fedora" || "$ID_LIKE" 
       PKG="yum"
     fi
 
+    echo "RedHat/Fedora/CentOS logic"    
+
     # Enable CRB/PowerTools for RHEL-based systems (version 8+) to provide gtk3-devel
     if [[ -n "$VERSION_ID" && "${VERSION_ID%%.*}" -ge 8 ]]; then
+        echo "Enable CRB/PowerTools for RHEL-based systems (version 8+) to provide gtk3-devel..."
         if [[ "$ID" == "rhel" ]] && command -v subscription-manager >/dev/null 2>&1; then
              echo "Enabling CodeReady Builder repo for RHEL..."
              # Use uname -m for architecture (x86_64)
