@@ -225,7 +225,10 @@ echo ""
 # Set defaults
 INSTALL_DIR="/opt/PAServer/$PRODUCT"
 SCRIPT_PATH="/usr/local/bin/pa$PRODUCT.sh"
-SCRATCH_DIR="/var/tmp/paserver-$PRODUCT"
+# Get the actual user who invoked sudo
+REAL_USER=${SUDO_USER:-$USER}
+REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
+SCRATCH_DIR="$REAL_HOME/.PAServer/$PRODUCT-scratch"
 echo "Installation directory: $INSTALL_DIR"
 echo "Launch script path: $SCRIPT_PATH"
 echo "" 
@@ -362,6 +365,7 @@ elif [[ "$PKG" == "pacman" ]]; then
         echo "Restoring original pacman configuration..."
         mv /etc/pacman.conf.bak /etc/pacman.conf
     fi
+else
     # Install individual tools instead of groups to ensure compatibility with minimal UBI containers
     echo "Installing core development tools and dependencies..."
     $PKG install -y gcc gcc-c++ make binutils autoconf automake \
@@ -413,10 +417,7 @@ if [[ "$PRODUCT" == "11.2" ]]; then
 fi
 # Ensure ownership by the invoking user
 mkdir -p "$SCRATCH_DIR"
-# Give all users write access to the scratch directory
-chgrp users "$SCRATCH_DIR"
-chmod g=rwx,o=rx "$SCRATCH_DIR"
-chown root:users "$SCRATCH_DIR"
+chown -R "$REAL_USER":"$REAL_USER" "$REAL_HOME/.PAServer"
 
 # Remove archive file
 rm "$INSTALL_DIR/$ARCHIVE"
@@ -433,8 +434,8 @@ cat <<EOF >"$SCRIPT_PATH"
 echo "Detected Linux distribution: \$NAME \$VERSION_ID (\$ID)"
 echo "________________________________________"
 echo "" 
-echo "Install dir: $INSTALL_DIR  " 
-echo "Script path: $SCRIPT_PATH  " 
+echo "Install dir: $INSTALL_DIR " 
+echo "Script path: $SCRIPT_PATH " 
 echo "Scratch dir: $SCRATCH_DIR " 
 echo "Password is BLANK (none) so you might want to change that..." 
 echo "________________________________________"

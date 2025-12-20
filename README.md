@@ -29,7 +29,7 @@ curl -fsSL https://tinyurl.com/SetupLinux4Delphi | sudo bash
 If you don't have curl you can use wget instead (Debian usually excludes curl by default):
 
 ```bash
-wget -q -O https://tinyurl.com/SetupLinux4Delphi | sudo bash 
+wget -qO - https://tinyurl.com/SetupLinux4Delphi | sudo bash 
 ```
 
 ⚠️*Warning*: Is is recommended to [locally review the script](scripts/SetupLinux4Delphi.sh) before running it in a *production* envorment.
